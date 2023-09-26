@@ -31,7 +31,7 @@ public class KMeans {
         initialCentroidSet = utils.generateInitialCentroidSet(conf);
 
         //add centroids set to Hadoop Configuration
-
+        utils.setCentroidsSetInConfiguration(conf, initialCentroidSet);
 
     }
 }

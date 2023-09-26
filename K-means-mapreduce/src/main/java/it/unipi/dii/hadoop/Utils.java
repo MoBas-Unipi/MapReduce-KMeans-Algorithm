@@ -27,7 +27,22 @@ public class Utils {
         this.maxIterations = conf.getInt("max_iterations", 50);
     }
 
+    /**
+     * Generate a list of Centroid (size k = clusterNumber) taken randomly from input file
+     * @param conf Hadoop configuration
+     * @return
+     */
     public List<Centroid> generateInitialCentroidSet(Configuration conf) {
         return null;
+    }
+
+
+    /**
+     * Set the initial centroids in the Hadoop Configuration (storage of initial centroids)
+     * @param conf Hadoop configuration
+     * @param initialCentroidSet initial centroids set
+     */
+    public void setCentroidsSetInConfiguration(Configuration conf, List<Centroid> initialCentroidSet) {
+
     }
 }
