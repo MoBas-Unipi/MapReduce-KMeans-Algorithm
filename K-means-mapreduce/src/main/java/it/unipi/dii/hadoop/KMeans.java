@@ -1,10 +1,12 @@
 package it.unipi.dii.hadoop;
 
+import it.unipi.dii.hadoop.model.Centroid;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
 
 import java.io.IOException;
-
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class KMeans {
@@ -24,8 +26,11 @@ public class KMeans {
         //set parameters
         utils.setParameters(conf,args);
 
+        //centroids set generation
+        List<Centroid> initialCentroidSet = new ArrayList<Centroid>();
+        initialCentroidSet = utils.generateInitialCentroidSet(conf);
 
-        //centroids set initialization
+        //add centroids set to Hadoop Configuration
 
 
     }
