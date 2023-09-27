@@ -4,7 +4,6 @@ import it.unipi.dii.hadoop.model.Centroid;
 import it.unipi.dii.hadoop.model.Point;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.conf.Configuration;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
