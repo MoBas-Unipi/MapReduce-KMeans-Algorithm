@@ -36,7 +36,6 @@ public class Utils {
         return null;
     }
 
-
     /**
      * Set the initial centroids in the Hadoop Configuration (storage of initial centroids)
      * @param conf Hadoop configuration
