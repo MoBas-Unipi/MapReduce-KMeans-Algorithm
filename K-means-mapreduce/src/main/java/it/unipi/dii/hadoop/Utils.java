@@ -1,9 +1,12 @@
 package it.unipi.dii.hadoop;
 
 import it.unipi.dii.hadoop.model.Centroid;
+import it.unipi.dii.hadoop.model.Point;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.conf.Configuration;
+import org.w3c.dom.Text;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Utils {
@@ -43,5 +46,53 @@ public class Utils {
      */
     public void setCentroidsSetInConfiguration(Configuration conf, List<Centroid> initialCentroidSet) {
 
+    }
+
+
+    //TODO vedere come si inseriscono i centroidi nel file di configurazione e di conseguenza estrarre le coordinate
+    public List<Centroid> readCentroidsSetInConfiguration(Configuration conf) {
+        //create a list to store the read centroids set
+        List<Centroid> centroids = new ArrayList<>();
+
+        //String[] centroidString = conf.getStrings("centroids");
+        //get string representation of the centroids
+        for(int i=0 ; i < clustersNumber ; i++ ){
+            //get the i-th centroid
+            //String[] centroidString = conf.getStrings("centroid"+i);
+            //get the coordinates by splitting the i-th centroid string
+            List<Double> coordinates = null;
+            //create a Centroid object and add to centroids list
+            centroids.add(new Centroid(i,coordinates));
+        }
+
+        //return centroids set
+        return centroids;
+    }
+
+    //TODO test
+    /**
+     * Split a string by a "," and creates a list of doubles representing the coordinates
+     * @param text
+     * @return coordinates in List<Double> format
+     */
+    public List<Double> splitInCoordinates(String text){
+        List<Double> coordinates = new ArrayList<>();
+        String[] line = text.split(",");
+        for (String coordinate : line) {
+            coordinates.add(Double.parseDouble(coordinate));
+        }
+        return coordinates;
+    }
+
+
+    //TODO test
+    public double computeEuclideanDistance(Point point, Point centroid) {
+        double sum = 0;
+        List<Double> centroidCoordinates = centroid.getCoordinates();
+        for (int i = 0; i < centroidCoordinates.size(); i++) {
+            double diff = centroidCoordinates.get(i) - point.getCoordinates().get(i);
+            sum += diff * diff;
+        }
+        return Math.sqrt(sum);
     }
 }

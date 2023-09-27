@@ -6,15 +6,25 @@ import org.apache.hadoop.io.WritableComparable;
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
+import java.util.List;
 
 public class Centroid implements WritableComparable<Centroid> {
 
     private IntWritable centroidID;
     private Point point;
 
-    public Centroid(IntWritable centroidID, Point point) {
-        this.centroidID = centroidID;
-        this.point = point;
+
+    public Centroid(int centroidID, List<Double> coordinates) {
+        this.centroidID = new IntWritable(centroidID);
+        this.point = new Point(coordinates);
+    }
+
+    public IntWritable getCentroidID() {
+        return centroidID;
+    }
+
+    public Point getPoint() {
+        return point;
     }
 
     @Override
