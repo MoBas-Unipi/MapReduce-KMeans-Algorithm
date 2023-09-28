@@ -3,7 +3,6 @@ package it.unipi.dii.hadoop;
 import it.unipi.dii.hadoop.model.Centroid;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
-import org.apache.hadoop.mapreduce.Job;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -28,8 +27,7 @@ public class KMeans {
         utils.setParameters(conf,args);
 
         //centroids set generation
-        List<Centroid> initialCentroidSet = new ArrayList<Centroid>();
-        initialCentroidSet = utils.generateInitialCentroidSet(conf);
+        List<Centroid> initialCentroidSet = utils.generateInitialCentroidSet(conf);
 
         //add centroids set to Hadoop Configuration
         utils.setCentroidsSetInConfiguration(conf, initialCentroidSet);
