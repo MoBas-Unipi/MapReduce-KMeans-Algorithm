@@ -85,6 +85,12 @@ public class Utils {
 
 
     //TODO test
+    /**
+     * Compute the Euclidean distance between two points
+     * @param point point to compare against the centroid
+     * @param centroid current centroid
+     * @return distance between the centroid and the point
+     */
     public double computeEuclideanDistance(Point point, Point centroid) {
         double sum = 0;
         List<Double> centroidCoordinates = centroid.getCoordinates();
