@@ -39,7 +39,7 @@ public class Utils {
      * @param conf Hadoop configuration
      * @return List of initial centroids
      */
-    public List<Centroid> generateInitialCentroidSet(Configuration conf) {
+    public List<Centroid> generateInitialCentroids(Configuration conf) {
         Set<Integer> initialCentroidPositions = new TreeSet<>();
         List<Centroid> initialCentroids = new ArrayList<>();
 
