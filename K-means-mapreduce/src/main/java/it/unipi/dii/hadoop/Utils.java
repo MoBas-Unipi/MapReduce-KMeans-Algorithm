@@ -39,9 +39,9 @@ public class Utils {
      * @param conf Hadoop configuration
      * @return List of initial centroids
      */
-    public List<Centroid> generateInitialCentroids(Configuration conf) {
+    public List<Point> generateInitialCentroids(Configuration conf) {
         Set<Integer> initialCentroidPositions = new TreeSet<>();
-        List<Centroid> initialCentroids = new ArrayList<>();
+        List<Point> initialCentroids = new ArrayList<>();
 
         Random random = new Random();
 
@@ -57,7 +57,6 @@ public class Utils {
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
 
             int lineNumber = 0;
-            int centroidId = 0;
             String line;
 
             while ((line = bufferedReader.readLine()) != null) {
@@ -65,9 +64,8 @@ public class Utils {
                     // The current line number matches one of the initial centroid positions
                     // Process the line and add it to the initialCentroids list
                     List<Double> coordinates = splitInCoordinates(line);
-                    Centroid centroid = new Centroid(new IntWritable(centroidId) , new Point(coordinates));
-                    initialCentroids.add(centroid);
-                    centroidId++;
+                    Point initialCentroid = new Point(coordinates);
+                    initialCentroids.add(initialCentroid);
                 }
                 lineNumber++;
             }
@@ -87,13 +85,13 @@ public class Utils {
      * @param conf Hadoop configuration
      * @param initialCentroids initial centroids
      */
-    public void setCentroidsInConfiguration(Configuration conf, List<Centroid> initialCentroids) {
+    public void setCentroidsInConfiguration(Configuration conf, List<Point> initialCentroids) {
         // Create an array to store the centroid points as strings
         String[] centroidStrings = new String[initialCentroids.size()];
 
         // Convert each centroid's point to a string and store it in the array
         for (int i = 0; i < initialCentroids.size(); i++) {
-            centroidStrings[i] = initialCentroids.get(i).getPoint().toString();
+            centroidStrings[i] = initialCentroids.get(i).toString();
         }
         // Set the configuration property specified by `key` to the array of centroid strings
         conf.setStrings("centroids", centroidStrings);

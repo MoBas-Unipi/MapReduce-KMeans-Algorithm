@@ -37,4 +37,13 @@ public class Point implements Writable {
     public void readFields(DataInput dataInput) throws IOException {
 
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        for (Double coordinate : coordinates) {
+            sb.append(coordinate).append(" ");
+        }
+        return sb.toString().trim();
+    }
 }

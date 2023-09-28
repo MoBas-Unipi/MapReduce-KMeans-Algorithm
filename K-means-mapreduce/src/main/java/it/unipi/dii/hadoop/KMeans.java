@@ -11,14 +11,14 @@ import java.util.List;
 public class KMeans {
     private final static Utils utils = new Utils();
 
-    public static void main (String[] args) throws IOException {
+    public static void main (String[] args) {
         //create configuration object and load config file
         Configuration conf = new Configuration();
         conf.addResource(new Path("config.xml"));
 
         //check number of arguments
-        if(args.length != 2) {
-            System.err.println("Error! Usage: <input path> <output path> ");
+        if (args.length != 2) {
+            System.err.println("Error! Usage: <input path> <output path>");
             System.exit(1);
         }
 
@@ -26,10 +26,10 @@ public class KMeans {
         utils.setParameters(conf,args);
 
         //centroids set generation
-        List<Centroid> initialCentroidSet = utils.generateInitialCentroids(conf);
+        List<Centroid> initialCentroids = utils.generateInitialCentroids(conf);
 
         //add centroids set to Hadoop Configuration
-        utils.setCentroidsInConfiguration(conf, initialCentroidSet);
+        utils.setCentroidsInConfiguration(conf, initialCentroids);
 
 
         /*MapReduce Execution
