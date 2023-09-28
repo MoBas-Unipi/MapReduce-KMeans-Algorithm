@@ -1,6 +1,11 @@
 package it.unipi.dii.hadoop.mapreduce;
 
-public class Mapper {
+import it.unipi.dii.hadoop.model.Point;
+import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Mapper;
+
+public class KMeansMapper extends Mapper<Object, Text, IntWritable, Point> {
 
 
     /*SETUP FUNCTION (context)
