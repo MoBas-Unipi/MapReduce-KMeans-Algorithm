@@ -85,10 +85,18 @@ public class Utils {
     /**
      * Set the initial centroids in the Hadoop Configuration (storage of initial centroids)
      * @param conf Hadoop configuration
-     * @param initialCentroidSet initial centroids set
+     * @param initialCentroids initial centroids
      */
-    public void setCentroidsSetInConfiguration(Configuration conf, List<Centroid> initialCentroidSet) {
+    public void setCentroidsInConfiguration(Configuration conf, List<Centroid> initialCentroids) {
+        // Create an array to store the centroid points as strings
+        String[] centroidStrings = new String[initialCentroids.size()];
 
+        // Convert each centroid's point to a string and store it in the array
+        for (int i = 0; i < initialCentroids.size(); i++) {
+            centroidStrings[i] = initialCentroids.get(i).getPoint().toString();
+        }
+        // Set the configuration property specified by `key` to the array of centroid strings
+        conf.setStrings("centroids", centroidStrings);
     }
 
     /**

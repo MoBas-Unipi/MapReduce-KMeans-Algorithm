@@ -12,6 +12,10 @@ public class Centroid implements WritableComparable<Centroid> {
     private IntWritable centroidID;
     private Point point;
 
+    public Point getPoint() {
+        return point;
+    }
+
     public Centroid(IntWritable centroidID, Point point) {
         this.centroidID = centroidID;
         this.point = point;

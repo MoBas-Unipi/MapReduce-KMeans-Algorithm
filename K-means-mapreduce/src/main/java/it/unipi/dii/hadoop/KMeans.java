@@ -5,7 +5,6 @@ import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -30,7 +29,7 @@ public class KMeans {
         List<Centroid> initialCentroidSet = utils.generateInitialCentroidSet(conf);
 
         //add centroids set to Hadoop Configuration
-        utils.setCentroidsSetInConfiguration(conf, initialCentroidSet);
+        utils.setCentroidsInConfiguration(conf, initialCentroidSet);
 
 
         /*MapReduce Execution
