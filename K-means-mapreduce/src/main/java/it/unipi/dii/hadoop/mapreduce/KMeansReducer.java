@@ -41,7 +41,6 @@ public class KMeansReducer extends Reducer<IntWritable, Point, IntWritable, Text
     /*
     ??CLENAUP
         1. chiusura file oppure liberare spazio
-
      */
 
 

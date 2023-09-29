@@ -136,25 +136,23 @@ public class Utils {
     }
 
 
-    //TODO togliere la config come parametro e prenderla da locale
     /**
      * Read the set of centroid stored in the Hadoop configuration
-     * @param conf TODO remove
      * @return a list of centroids
      */
-    public List<Centroid> readCentroidsInConfiguration(Configuration conf) {
+    public List<Centroid> readCentroidsInConfiguration() {
         //create a list to store the read centroids set
         List<Centroid> centroids = new ArrayList<>();
 
         //get string representation of the centroids
-        String[] centroidStrings = conf.getStrings("centroids");
+        String[] centroidStrings = this.conf.getStrings("centroids");
 
         // Convert each centroid's point to a string and store it in the array
         for (int i = 0; i < centroidStrings.length; i++) {
             //get the coordinates by splitting the i-th centroid string
             List<Double> coordinates = splitInCoordinates(centroidStrings[i]);
             //add to centroids list a new Centroid object along with the extracted coordinates
-            centroids.add(new Centroid(i,coordinates));
+            centroids.add(new Centroid(new IntWritable(i),new Point(coordinates)));
         }
         //return the list of centroids
         return centroids;
@@ -168,7 +166,7 @@ public class Utils {
      */
     public List<Double> splitInCoordinates(String text){
         List<Double> coordinates = new ArrayList<>();
-        String[] line = text.split(",");
+        String[] line = text.split(" ");
         for (String coordinate : line) {
             coordinates.add(Double.parseDouble(coordinate));
         }

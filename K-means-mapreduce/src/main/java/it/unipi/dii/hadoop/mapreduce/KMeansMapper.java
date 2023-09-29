@@ -23,7 +23,7 @@ public class KMeansMapper extends Mapper<Object, Text, IntWritable, Point> {
      */
     public void setup(Context context) {
         //Load centroids set from Hadoop configuration
-        this.centroids = utils.readCentroidsInConfiguration(context.getConfiguration());
+        this.centroids = utils.readCentroidsInConfiguration();
     }
 
     //TODO test
