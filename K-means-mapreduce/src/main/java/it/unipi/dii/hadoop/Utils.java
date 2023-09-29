@@ -166,7 +166,7 @@ public class Utils {
      */
     public List<Double> splitInCoordinates(String text){
         List<Double> coordinates = new ArrayList<>();
-        String[] line = text.split(" ");
+        String[] line = text.split(",");
         for (String coordinate : line) {
             coordinates.add(Double.parseDouble(coordinate));
         }
