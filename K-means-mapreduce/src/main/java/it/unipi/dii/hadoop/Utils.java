@@ -48,30 +48,34 @@ public class Utils {
     }
 
 
-    //TODO vedere come si inseriscono i centroidi nel file di configurazione e di conseguenza estrarre le coordinate
-    public List<Centroid> readCentroidsSetInConfiguration(Configuration conf) {
+    //TODO togliere la config e prenderla da locale
+    /**
+     * Read the set of centroid stored in the Hadoop configuration
+     * @param conf TODO remove
+     * @return a list of centroids
+     */
+    public List<Centroid> readCentroidsInConfiguration(Configuration conf) {
         //create a list to store the read centroids set
         List<Centroid> centroids = new ArrayList<>();
 
-        //String[] centroidString = conf.getStrings("centroids");
         //get string representation of the centroids
-        for(int i=0 ; i < clustersNumber ; i++ ){
-            //get the i-th centroid
-            //String[] centroidString = conf.getStrings("centroid"+i);
+        String[] centroidStrings = conf.getStrings("centroids");
+
+        // Convert each centroid's point to a string and store it in the array
+        for (int i = 0; i < centroidStrings.length; i++) {
             //get the coordinates by splitting the i-th centroid string
-            List<Double> coordinates = null;
-            //create a Centroid object and add to centroids list
+            List<Double> coordinates = splitInCoordinates(centroidStrings[i]);
+            //add to centroids list a new Centroid object along with the extracted coordinates
             centroids.add(new Centroid(i,coordinates));
         }
-
-        //return centroids set
+        //return the list of centroids
         return centroids;
     }
 
     //TODO test
     /**
-     * Split a string by a "," and creates a list of doubles representing the coordinates
-     * @param text
+     * Split a string by "," characters and creates a list of doubles representing the coordinates
+     * @param text string to split
      * @return coordinates in List<Double> format
      */
     public List<Double> splitInCoordinates(String text){
