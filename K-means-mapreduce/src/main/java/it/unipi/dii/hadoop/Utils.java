@@ -1,9 +1,9 @@
 package it.unipi.dii.hadoop;
 
-
 import it.unipi.dii.hadoop.mapreduce.KMeansCombiner;
 import it.unipi.dii.hadoop.mapreduce.KMeansMapper;
 import it.unipi.dii.hadoop.mapreduce.KMeansReducer;
+
 import org.apache.hadoop.fs.FSDataInputStream;
 import org.apache.hadoop.fs.FileSystem;
 
