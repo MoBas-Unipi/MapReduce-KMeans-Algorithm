@@ -1,11 +1,15 @@
 package it.unipi.dii.hadoop;
 
+
 import it.unipi.dii.hadoop.mapreduce.KMeansCombiner;
 import it.unipi.dii.hadoop.mapreduce.KMeansMapper;
 import it.unipi.dii.hadoop.mapreduce.KMeansReducer;
-import it.unipi.dii.hadoop.model.Point;
 import org.apache.hadoop.fs.FSDataInputStream;
 import org.apache.hadoop.fs.FileSystem;
+
+import it.unipi.dii.hadoop.model.Centroid;
+import it.unipi.dii.hadoop.model.Point;
+
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.io.IntWritable;
@@ -18,6 +22,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.*;
+
 
 public class Utils {
 
@@ -107,19 +112,6 @@ public class Utils {
         this.conf.setStrings("centroids", centroidStrings);
     }
 
-    /**
-     * Split a string by a "," and creates a list of doubles representing the coordinates
-     * @param text text representing the point's coordinates to split
-     * @return coordinates in List<Double> format
-     */
-    public List<Double> splitInCoordinates(String text){
-        List<Double> coordinates = new ArrayList<>();
-        String[] line = text.split(",");
-        for (String coordinate : line) {
-            coordinates.add(Double.parseDouble(coordinate));
-        }
-        return coordinates;
-    }
 
     public Job configureJob(int iteration) {
         Job job;
@@ -141,5 +133,64 @@ public class Utils {
             return null;
         }
         return job;
+    }
+
+
+    //TODO togliere la config come parametro e prenderla da locale
+    /**
+     * Read the set of centroid stored in the Hadoop configuration
+     * @param conf TODO remove
+     * @return a list of centroids
+     */
+    public List<Centroid> readCentroidsInConfiguration(Configuration conf) {
+        //create a list to store the read centroids set
+        List<Centroid> centroids = new ArrayList<>();
+
+        //get string representation of the centroids
+        String[] centroidStrings = conf.getStrings("centroids");
+
+        // Convert each centroid's point to a string and store it in the array
+        for (int i = 0; i < centroidStrings.length; i++) {
+            //get the coordinates by splitting the i-th centroid string
+            List<Double> coordinates = splitInCoordinates(centroidStrings[i]);
+            //add to centroids list a new Centroid object along with the extracted coordinates
+            centroids.add(new Centroid(i,coordinates));
+        }
+        //return the list of centroids
+        return centroids;
+    }
+
+    //TODO test
+    /**
+     * Split a string by "," characters and creates a list of doubles representing the coordinates
+     * @param text text representing the point's coordinates to split
+     * @return coordinates in List<Double> format
+     */
+    public List<Double> splitInCoordinates(String text){
+        List<Double> coordinates = new ArrayList<>();
+        String[] line = text.split(",");
+        for (String coordinate : line) {
+            coordinates.add(Double.parseDouble(coordinate));
+        }
+        return coordinates;
+    }
+
+
+    //TODO test
+    /**
+     * Compute the Euclidean distance between two points
+     * Math explanation: square root of the sum of the squares of the differences for each coordinate
+     * @param point point to compare against the centroid
+     * @param centroid current centroid
+     * @return distance between the centroid and the point
+     */
+    public double computeEuclideanDistance(Point point, Point centroid) {
+        double sum = 0;
+        List<Double> centroidCoordinates = centroid.getCoordinates();
+        for (int i = 0; i < centroidCoordinates.size(); i++) {
+            double diff = centroidCoordinates.get(i) - point.getCoordinates().get(i);
+            sum += diff * diff;
+        }
+        return Math.sqrt(sum);
     }
 }
