@@ -48,7 +48,7 @@ public class Utils {
     }
 
 
-    //TODO togliere la config e prenderla da locale
+    //TODO togliere la config come parametro e prenderla da locale
     /**
      * Read the set of centroid stored in the Hadoop configuration
      * @param conf TODO remove
@@ -91,6 +91,7 @@ public class Utils {
     //TODO test
     /**
      * Compute the Euclidean distance between two points
+     * Math explanation: square root of the sum of the squares of the differences for each coordinate
      * @param point point to compare against the centroid
      * @param centroid current centroid
      * @return distance between the centroid and the point

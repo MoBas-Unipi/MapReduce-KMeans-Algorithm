@@ -15,14 +15,18 @@ public class KMeansMapper extends Mapper<Object, Text, IntWritable, Point> {
     private List<Centroid> centroids;
     private Utils utils = new Utils();
 
-    //TODO definire la funzione per leggere i centroidi dalla config
+    //TODO test
+    /**
+     *Setup function of the KMeansMapper class.
+     * initializes and loads the list of centroids saved in the Hadoop configuration to be used in the Mapper function
+     * @param context context object to interact with Hadoop
+     */
     public void setup(Context context) {
         //Load centroids set from Hadoop configuration
         this.centroids = utils.readCentroidsInConfiguration(context.getConfiguration());
     }
 
     //TODO test
-
     /**
      * Map function of the KMeansMapper class.
      * 1.create a Point object from the text received
@@ -60,8 +64,6 @@ public class KMeansMapper extends Mapper<Object, Text, IntWritable, Point> {
 
         //3.emit/write the pair (centroid_id, nearest point)
         context.write(centroidID, point);
-
     }
-
 
 }

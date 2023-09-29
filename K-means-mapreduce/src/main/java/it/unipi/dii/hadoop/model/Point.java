@@ -50,7 +50,6 @@ public class Point implements Writable {
         this.partialPointsCounter = 1;
     }
 
-    
     public List<Double> getCoordinates() {
         return coordinates;
     }
@@ -60,13 +59,39 @@ public class Point implements Writable {
     }
 
 
+    /**
+     * Override Writable class write function
+     * serialize in bytes the coordinates attribute, its size and the partial sum counter
+     * @param dataOutput output stream object
+     * @throws IOException
+     */
     @Override
     public void write(DataOutput dataOutput) throws IOException {
-
+        //serialize the dimensions number of the coordinates
+        dataOutput.writeInt(this.coordinates.size());
+        //serialize coordinates attribute
+        for (Double coordinate : this.coordinates) {
+            dataOutput.writeDouble(coordinate);
+        }
+        //serialize partial sums counter attribute
+        dataOutput.writeInt(this.partialPointsCounter);
     }
 
+    /**
+     * Override Writable class readFields function
+     * deserialize from bytes into a Point object attributes the coordinates, its size and the partial sum counter
+     * @param dataInput input stream object
+     * @throws IOException
+     */
     @Override
     public void readFields(DataInput dataInput) throws IOException {
-
+        //instantiate the empty coordinate list
+        this.coordinates = new ArrayList<>();
+        //deserialize coordinates attribute and add to the coordinates attribute
+        for (int i = 0; i < dataInput.readInt(); i++) {
+            this.coordinates.add(dataInput.readDouble());
+        }
+        //deserialize partial sums counter and add to partialPointsCounter attribute
+        this.partialPointsCounter = dataInput.readInt();
     }
 }
