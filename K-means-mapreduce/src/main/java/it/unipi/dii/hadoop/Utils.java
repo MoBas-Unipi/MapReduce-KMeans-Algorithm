@@ -3,15 +3,13 @@ package it.unipi.dii.hadoop;
 import it.unipi.dii.hadoop.mapreduce.KMeansCombiner;
 import it.unipi.dii.hadoop.mapreduce.KMeansMapper;
 import it.unipi.dii.hadoop.mapreduce.KMeansReducer;
-
-import org.apache.hadoop.fs.FSDataInputStream;
-import org.apache.hadoop.fs.FileSystem;
-
 import it.unipi.dii.hadoop.model.Centroid;
 import it.unipi.dii.hadoop.model.Point;
-
-import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.FSDataInputStream;
+import org.apache.hadoop.fs.FileStatus;
+import org.apache.hadoop.fs.FileSystem;
+import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
@@ -112,7 +110,12 @@ public class Utils {
         this.conf.setStrings("centroids", centroidStrings);
     }
 
-
+    /**
+     * Configures a job for a specific iteration.
+     *
+     * @param iteration The iteration number for the job.
+     * @return A configured Hadoop MapReduce job for K-Means clustering.
+     */
     public Job configureJob(int iteration) {
         Job job;
         try {
@@ -133,6 +136,75 @@ public class Utils {
             return null;
         }
         return job;
+    }
+
+    /**
+     * Calculates the shift (change) in centroids between the previous centroids stored in the
+     * configuration and the current centroids.
+     *
+     * @param computedCentroids The list of current centroids.
+     * @return The total shift (change) in centroids.
+     */
+    public double computeCentroidShift(List<Centroid> computedCentroids) {
+        // Load previous centroids from the configuration
+        List<Centroid> previousCentroids = readCentroidsInConfiguration();
+        // Initialize the variable to store the total shift of all centroids
+        double centroidShift = 0.0;
+        // Iterate over all centroids
+        for (int i = 0; i < computedCentroids.size(); i++) {
+            // Calculate the Euclidean distance between the computed and previous centroids
+            double distance = this.computeEuclideanDistance(computedCentroids.get(i).getPoint(),
+                                                            previousCentroids.get(i).getPoint());
+            // Add the distance to the total shift
+            centroidShift += distance;
+        }
+        // Return the total shift of all centroids
+        return centroidShift;
+    }
+
+    /**
+     * Reads computed centroids from files and returns them as a list.
+     *
+     * @return A list of computed centroids.
+     */
+    public List<Centroid> readComputedCentroids() {
+        List<Centroid> computedCentroids = new ArrayList<>();
+
+        try (FileSystem hdfs = FileSystem.get(conf)) {
+            // List the status of files in the specified output path.
+            FileStatus[] fileStatus = hdfs.listStatus(this.outputPath);
+            for (FileStatus status : fileStatus) {
+                Path path = status.getPath();
+                // Skip success files in the output folder
+                if (path.getName().endsWith("_SUCCESS")) {
+                    continue;
+                }
+                try (BufferedReader br = new BufferedReader(new InputStreamReader(hdfs.open(path)))) {
+                    // Read each line from the file.
+                    for (String line; (line = br.readLine()) != null;) {
+                        String[] fields = line.split("\\s");
+                        Centroid centroid = new Centroid();
+                        // Set the centroid ID from the first field.
+                        centroid.setCentroidID(new IntWritable(Integer.parseInt(fields[0])));
+                        List<Double> coordinates = new ArrayList<>();
+                        // Parse and add the remaining fields as coordinates.
+                        for (int i = 1; i < fields.length; i++) {
+                            coordinates.add(Double.parseDouble(fields[i]));
+                        }
+                        // Create a Point object with the parsed coordinates.
+                        Point point = new Point(coordinates);
+                        centroid.setPoint(point);
+                        // Add the computed centroid to the list.
+                        computedCentroids.add(centroid);
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        // Sort the computed centroids.
+        Collections.sort(computedCentroids);
+        return computedCentroids;
     }
 
 
