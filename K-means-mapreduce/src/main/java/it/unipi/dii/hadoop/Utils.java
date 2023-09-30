@@ -33,6 +33,7 @@ public class Utils {
     private int reducersNumber;
     private float threshold;
     private int maxIterations;
+    private FileSystem hdfs;
 
     public void setParameters(String[] args){
         this.conf = new Configuration();
@@ -52,9 +53,9 @@ public class Utils {
      *
      * @return List of initial centroids
      */
-    public List<Point> generateInitialCentroids() {
+    public List<Centroid> generateInitialCentroids() {
         Set<Integer> initialCentroidPositions = new TreeSet<>();
-        List<Point> initialCentroids = new ArrayList<>();
+        List<Centroid> initialCentroids = new ArrayList<>();
 
         Random random = new Random();
 
@@ -65,8 +66,8 @@ public class Utils {
 
         try {
             // Access the Hadoop FileSystem and open the input file
-            FileSystem hdfs = FileSystem.get(this.conf);
-            FSDataInputStream inputStream = hdfs.open(this.inputPath);
+            this.hdfs = FileSystem.get(this.conf);
+            FSDataInputStream inputStream = this.hdfs.open(this.inputPath);
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
 
             int lineNumber = 0;
@@ -77,7 +78,8 @@ public class Utils {
                     // The current line number matches one of the initial centroid positions
                     // Process the line and add it to the initialCentroids list
                     List<Double> coordinates = splitInCoordinates(line);
-                    Point initialCentroid = new Point(coordinates);
+                    Centroid initialCentroid = new Centroid();
+                    initialCentroid.setPoint(new Point(coordinates));
                     initialCentroids.add(initialCentroid);
                 }
                 lineNumber++;
@@ -86,7 +88,7 @@ public class Utils {
             bufferedReader.close();
         } catch (IOException e) {
             e.printStackTrace();
-            return null;
+            System.exit(1);
         }
 
         return initialCentroids;
@@ -98,13 +100,13 @@ public class Utils {
      *
      * @param initialCentroids initial centroids
      */
-    public void setCentroidsInConfiguration(List<Point> initialCentroids) {
+    public void setCentroidsInConfiguration(List<Centroid> initialCentroids) {
         // Create an array to store the centroid points as strings
         String[] centroidStrings = new String[initialCentroids.size()];
 
         // Convert each centroid's point to a string and store it in the array
         for (int i = 0; i < initialCentroids.size(); i++) {
-            centroidStrings[i] = initialCentroids.get(i).toString();
+            centroidStrings[i] = initialCentroids.get(i).getPoint().toString();
         }
         // Set the configuration property specified by `key` to the array of centroid strings
         this.conf.setStrings("centroids", centroidStrings);
@@ -117,7 +119,7 @@ public class Utils {
      * @return A configured Hadoop MapReduce job for K-Means clustering.
      */
     public Job configureJob(int iteration) {
-        Job job;
+        Job job = null;
         try {
             job = Job.getInstance(this.conf, "K-Means Job n. " + iteration);
             job.setJarByClass(KMeans.class);
@@ -132,8 +134,9 @@ public class Utils {
             FileInputFormat.addInputPath(job, this.inputPath);
             FileOutputFormat.setOutputPath(job, this.outputPath);
         } catch (IOException e) {
+            System.out.println("Error in configuring job");
             e.printStackTrace();
-            return null;
+            System.exit(1);
         }
         return job;
     }
@@ -145,7 +148,7 @@ public class Utils {
      * @param computedCentroids The list of current centroids.
      * @return The total shift (change) in centroids.
      */
-    public double computeCentroidShift(List<Centroid> computedCentroids) {
+    public double computeCentroidsShift(List<Centroid> computedCentroids) {
         // Load previous centroids from the configuration
         List<Centroid> previousCentroids = readCentroidsInConfiguration();
         // Initialize the variable to store the total shift of all centroids
@@ -170,16 +173,16 @@ public class Utils {
     public List<Centroid> readComputedCentroids() {
         List<Centroid> computedCentroids = new ArrayList<>();
 
-        try (FileSystem hdfs = FileSystem.get(conf)) {
+        try {
             // List the status of files in the specified output path.
-            FileStatus[] fileStatus = hdfs.listStatus(this.outputPath);
+            FileStatus[] fileStatus = this.hdfs.listStatus(this.outputPath);
             for (FileStatus status : fileStatus) {
                 Path path = status.getPath();
                 // Skip success files in the output folder
                 if (path.getName().endsWith("_SUCCESS")) {
                     continue;
                 }
-                try (BufferedReader br = new BufferedReader(new InputStreamReader(hdfs.open(path)))) {
+                try (BufferedReader br = new BufferedReader(new InputStreamReader(this.hdfs.open(path)))) {
                     // Read each line from the file.
                     for (String line; (line = br.readLine()) != null;) {
                         String[] fields = line.split("\\s");
@@ -262,5 +265,31 @@ public class Utils {
             sum += diff * diff;
         }
         return Math.sqrt(sum);
+    }
+
+    public void clearOutputPath() {
+        try {
+            if (this.hdfs.exists(this.outputPath)) {
+                this.hdfs.delete(this.outputPath, true);
+            }
+        } catch (IOException e) {
+            System.err.println("Error in deleting the output path");
+            e.printStackTrace();
+            System.exit(1);
+        }
+    }
+
+    /**
+     *
+     * @param shift total difference of all centroids
+     * @param currentIteration current iteration
+     * @return true if the convergence criterion is satisfied
+     */
+    public boolean isConverged(double shift, int currentIteration) {
+        return shift < this.threshold || currentIteration == maxIterations;
+    }
+
+    public int getMaxIterations() {
+        return maxIterations;
     }
 }
