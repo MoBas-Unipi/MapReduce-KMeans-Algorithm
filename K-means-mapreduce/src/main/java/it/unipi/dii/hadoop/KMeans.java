@@ -14,7 +14,9 @@ import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
+import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -24,7 +26,6 @@ import java.util.*;
 
 public class KMeans {
 
-    private Configuration conf;
     private Path inputPath;
     private Path outputPath;
     private int pointsNumber;
@@ -34,15 +35,14 @@ public class KMeans {
     private int maxIterations;
     private FileSystem hdfs;
 
-    public void setParameters(String[] args){
-        this.conf = new Configuration();
-        this.conf.addResource(new Path("config.xml"));
+    public void setParameters(String[] args , Configuration conf){
+        conf.addResource(new Path("config.xml"));
         this.inputPath = new Path(args[0]);
         this.outputPath = new Path(args[1]);
-        this.pointsNumber = conf.getInt("points_number",100); //n
-        this.clustersNumber = conf.getInt("clusters_number", 2); //k
+        this.pointsNumber = conf.getInt("points_number",1000); //n
+        this.clustersNumber = conf.getInt("clusters_number", 4); //k
         this.reducersNumber = conf.getInt("reducers_number", 1);
-        this.threshold = conf.getFloat("threshold", 0.0001f);
+        this.threshold = conf.getFloat("threshold", 0.0001F);
         this.maxIterations = conf.getInt("max_iterations", 50);
     }
 
@@ -51,7 +51,7 @@ public class KMeans {
      *
      * @return List of initial centroids
      */
-    public List<Centroid> generateInitialCentroids() {
+    public List<Centroid> generateInitialCentroids(Configuration conf) {
         Set<Integer> initialCentroidPositions = new TreeSet<>();
         List<Centroid> initialCentroids = new ArrayList<>();
 
@@ -64,7 +64,7 @@ public class KMeans {
 
         try {
             // Access the Hadoop FileSystem and open the input file
-            this.hdfs = FileSystem.get(this.conf);
+            this.hdfs = FileSystem.get(conf);
             FSDataInputStream inputStream = this.hdfs.open(this.inputPath);
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
 
@@ -96,7 +96,7 @@ public class KMeans {
      *
      * @param initialCentroids initial centroids
      */
-    public void setCentroidsInConfiguration(List<Centroid> initialCentroids) {
+    public void setCentroidsInConfiguration(List<Centroid> initialCentroids, Configuration conf) {
         // Create an array to store the centroid points as strings
         String[] centroidStrings = new String[initialCentroids.size()];
 
@@ -105,7 +105,8 @@ public class KMeans {
             centroidStrings[i] = initialCentroids.get(i).getPoint().toString();
         }
         // Set the configuration property specified by `key` to the array of centroid strings
-        this.conf.setStrings("centroids", centroidStrings);
+        conf.setStrings("centroids", centroidStrings);
+        //System.out.println(Arrays.toString(conf.getStrings("centroids")));
     }
 
     /**
@@ -114,8 +115,9 @@ public class KMeans {
      * @param iteration The iteration number for the job.
      * @return A configured Hadoop MapReduce job for K-Means clustering.
      */
-    public Job configureJob(int iteration) throws IOException {
-        Job job = Job.getInstance(this.conf, "K-Means-Job-n-" + iteration);
+    public Job configureJob(int iteration, Configuration conf) throws IOException, InterruptedException, ClassNotFoundException {
+        System.out.println(Arrays.toString(conf.getStrings("centroids")));
+        Job job = Job.getInstance(conf, "K-Means-Job-n-" + iteration);
         job.setJarByClass(Application.class);
         job.setMapperClass(KMeansMapper.class);
         job.setCombinerClass(KMeansCombiner.class);
@@ -127,7 +129,9 @@ public class KMeans {
         job.setNumReduceTasks(this.reducersNumber);
         FileInputFormat.addInputPath(job, this.inputPath);
         FileOutputFormat.setOutputPath(job, this.outputPath);
+
         return job;
+
     }
 
     /**
@@ -137,11 +141,11 @@ public class KMeans {
      * @param computedCentroids The list of current centroids.
      * @return The total shift (change) in centroids.
      */
-    public double computeCentroidsShift(List<Centroid> computedCentroids) {
+    public double computeCentroidsShift(List<Centroid> computedCentroids, Configuration conf) {
         // Load previous centroids from the configuration
-        List<Centroid> previousCentroids = readCentroidsInConfiguration();
+        List<Centroid> previousCentroids = readCentroidsInConfiguration(conf);
         // Initialize the variable to store the total shift of all centroids
-        double centroidShift = 0.0;
+        double centroidShift = 0.00000;
         // Iterate over all centroids
         for (int i = 0; i < computedCentroids.size(); i++) {
             // Calculate the Euclidean distance between the computed and previous centroids
@@ -151,6 +155,7 @@ public class KMeans {
             centroidShift += distance;
         }
         // Return the total shift of all centroids
+        System.out.println("SHIFT :" + centroidShift);
         return centroidShift;
     }
 
@@ -174,7 +179,7 @@ public class KMeans {
                 try (BufferedReader br = new BufferedReader(new InputStreamReader(this.hdfs.open(path)))) {
                     // Read each line from the file.
                     for (String line; (line = br.readLine()) != null;) {
-                        String[] fields = line.split("\\s");
+                        String[] fields = line.split(" ");
                         Centroid centroid = new Centroid();
                         // Set the centroid ID from the first field.
                         centroid.setCentroidID(new IntWritable(Integer.parseInt(fields[0])));
@@ -204,12 +209,12 @@ public class KMeans {
      * Read the set of centroid stored in the Hadoop configuration
      * @return a list of centroids
      */
-    public List<Centroid> readCentroidsInConfiguration() {
+    public List<Centroid> readCentroidsInConfiguration(Configuration conf) {
         //create a list to store the read centroids set
         List<Centroid> centroids = new ArrayList<>();
 
         //get string representation of the centroids
-        String[] centroidStrings = this.conf.getStrings("centroids");
+        String[] centroidStrings = conf.getStrings("centroids");
 
         // Convert each centroid's point to a string and store it in the array
         for (int i = 0; i < centroidStrings.length; i++) {
@@ -247,7 +252,7 @@ public class KMeans {
      * @return distance between the centroid and the point
      */
     public double computeEuclideanDistance(Point point, Point centroid) {
-        double sum = 0;
+        double sum = 0.000000;
         List<Double> centroidCoordinates = centroid.getCoordinates();
         for (int i = 0; i < centroidCoordinates.size(); i++) {
             double diff = centroidCoordinates.get(i) - point.getCoordinates().get(i);

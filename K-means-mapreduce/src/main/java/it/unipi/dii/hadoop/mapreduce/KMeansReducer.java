@@ -22,10 +22,12 @@ public class KMeansReducer extends Reducer<IntWritable, Point, IntWritable, Text
      * @throws IOException
      * @throws InterruptedException
      */
+    @Override
     public void reduce (IntWritable centroidID, Iterable<Point> partialSumPointsList, Context context) throws IOException, InterruptedException {
         Iterator<Point> pointsIterator = partialSumPointsList.iterator();
         Point nextCentroid = pointsIterator.next();
 
+        System.out.println("FUNZIONA REDUCER");
         //1.sum the coordinates of the points associated for each centroidID
         while (pointsIterator.hasNext()) {
             nextCentroid.sumCoordinates(pointsIterator.next());

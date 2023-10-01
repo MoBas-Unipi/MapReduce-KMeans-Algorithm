@@ -20,8 +20,10 @@ public class KMeansCombiner extends Reducer<IntWritable, Point, IntWritable, Poi
      * @throws IOException
      * @throws InterruptedException
      */
+    @Override
     public void reduce(IntWritable centroidID, Iterable<Point> pointsList, Context context) throws IOException, InterruptedException {
         //definition of an iterator for the points list
+        System.out.println("FUNZIONA COMBINER");
         Iterator<Point> pointsIterator = pointsList.iterator();
 
         //definition of the point that holds the coordinates partial sum
@@ -32,7 +34,6 @@ public class KMeansCombiner extends Reducer<IntWritable, Point, IntWritable, Poi
             //1.sum the coordinates of the current point with the other points coordinates in list
             partialSumPoint.sumCoordinates(pointsIterator.next());
         }
-
         //2. emit/write of the pair (centroidID, partialSumPoint)
         context.write(centroidID,partialSumPoint);
     }
