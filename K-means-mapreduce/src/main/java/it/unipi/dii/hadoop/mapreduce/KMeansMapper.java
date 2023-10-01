@@ -1,6 +1,6 @@
 package it.unipi.dii.hadoop.mapreduce;
 
-import it.unipi.dii.hadoop.Utils;
+import it.unipi.dii.hadoop.KMeans;
 import it.unipi.dii.hadoop.model.Centroid;
 import it.unipi.dii.hadoop.model.Point;
 import org.apache.hadoop.io.IntWritable;
@@ -13,7 +13,7 @@ import java.util.List;
 public class KMeansMapper extends Mapper<Object, Text, IntWritable, Point> {
 
     private List<Centroid> centroids;
-    private Utils utils = new Utils();
+    private KMeans utils = new KMeans();
 
     //TODO test
     /**
