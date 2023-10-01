@@ -173,7 +173,6 @@ public class KMeans {
                 }
                 try (BufferedReader br = new BufferedReader(new InputStreamReader(this.hdfs.open(path)))) {
                     // Read each line from the file.
-                    int j = 0;
                     for (String line; (line = br.readLine()) != null;) {
                         String[] fields = line.split("\\s");
                         Centroid centroid = new Centroid();
