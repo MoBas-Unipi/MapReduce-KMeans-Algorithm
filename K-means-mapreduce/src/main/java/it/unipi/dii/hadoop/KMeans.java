@@ -115,7 +115,7 @@ public class KMeans {
      * @return A configured Hadoop MapReduce job for K-Means clustering.
      */
     public Job configureJob(int iteration) throws IOException {
-        Job job = Job.getInstance(this.conf, "K-Means Job n. " + iteration);
+        Job job = Job.getInstance(this.conf, "K-Means-Job-n-" + iteration);
         job.setJarByClass(Application.class);
         job.setMapperClass(KMeansMapper.class);
         job.setCombinerClass(KMeansCombiner.class);
@@ -173,6 +173,7 @@ public class KMeans {
                 }
                 try (BufferedReader br = new BufferedReader(new InputStreamReader(this.hdfs.open(path)))) {
                     // Read each line from the file.
+                    int j = 0;
                     for (String line; (line = br.readLine()) != null;) {
                         String[] fields = line.split("\\s");
                         Centroid centroid = new Centroid();

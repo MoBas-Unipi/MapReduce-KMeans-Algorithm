@@ -10,7 +10,7 @@ import java.util.List;
 public class Application {
     private final static KMeans utils = new KMeans();
 
-    public static void main (String[] args) {
+    public static void main (String[] args) throws IOException {
         //check number of arguments
         if (args.length != 2) {
             System.err.println("Error! Usage: <input path> <output path>");
@@ -35,21 +35,30 @@ public class Application {
 
         while (!convergenceCondition){
             // Delete output path files if exist
-            utils.clearOutputPath();
+            //utils.clearOutputPath();
             // Configure and execute Job
 
-            try (Job job = utils.configureJob(currentIteration)){
+            Job job = utils.configureJob(currentIteration);
+            /*
+            try{
                 if (!job.waitForCompletion(true)){
-                    System.exit(1);
+                    System.err.println("Error in the configuration or execution of the job");
+                    //System.exit(1);
                 }
             } catch (IOException | InterruptedException | ClassNotFoundException e) {
                 System.err.println("Error in the configuration or execution of the job");
                 e.printStackTrace();
             }
+            */
             // Read computed centroids list from the output files
             List<Centroid> computedCentroids = utils.readComputedCentroids();
             // Compute the centroids shift
             double centroidsShift = utils.computeCentroidsShift(computedCentroids);
+            for (Centroid centroid : computedCentroids){
+                System.out.println("CENTROID : ");
+                System.out.println(centroid.getCentroidID());
+                System.out.println(centroid.getPoint().getCoordinates());
+            }
             // Check the convergence condition
             convergenceCondition = utils.isConverged(centroidsShift, currentIteration);
             if (!convergenceCondition){

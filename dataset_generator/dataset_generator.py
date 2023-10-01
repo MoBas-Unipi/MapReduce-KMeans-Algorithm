@@ -6,7 +6,7 @@ import seaborn as sns
 # Set the parameters for data generation
 n = 1000  # Number of data points
 d = 2  # Number of dimensions
-k = 10  # Number of clusters
+k = 4  # Number of clusters
 
 # Generate synthetic data using make_blobs function
 points, y = make_blobs(n_samples=n, centers=k, n_features=d)
@@ -18,7 +18,7 @@ with open(f"dataset_{d}_dim_{k}_clusters.txt", "w") as file:
             if value == (d - 1):
                 file.write(str(round(point[value], 4)))
             else:
-                file.write(str(round(point[value], 4)) + ",")
+                file.write(str(round(point[value], 4)) + " ")
         file.write("\n")
 
 # Create a DataFrame for further visualization with labels
