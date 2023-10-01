@@ -54,17 +54,19 @@ public class Application {
             List<Centroid> computedCentroids = utils.readComputedCentroids();
             // Compute the centroids shift
             double centroidsShift = utils.computeCentroidsShift(computedCentroids);
-            for (Centroid centroid : computedCentroids){
-                System.out.println("CENTROID : ");
-                System.out.println(centroid.getCentroidID());
-                System.out.println(centroid.getPoint().getCoordinates());
-            }
             // Check the convergence condition
             convergenceCondition = utils.isConverged(centroidsShift, currentIteration);
             if (!convergenceCondition){
                 // Set the current computed centroids in configuration
                 utils.setCentroidsInConfiguration(computedCentroids);
+                System.out.println("ITERATION: " + currentIteration);
                 currentIteration++;
+            }
+            else {
+                for (Centroid centroid : computedCentroids){
+                    System.out.println("CENTROID ID: "+ centroid.getCentroidID());
+                    System.out.println("COORDINATES: "+centroid.getPoint().getCoordinates() + "\n");
+                }
             }
         }
     }

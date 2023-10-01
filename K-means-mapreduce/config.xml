@@ -20,7 +20,7 @@
 
     <property>
         <name>threshold</name>
-        <value>0.0001</value>
+        <value>0.1</value>
         <final>true</final>
     </property>
 
