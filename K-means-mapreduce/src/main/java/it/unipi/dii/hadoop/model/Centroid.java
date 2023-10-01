@@ -12,6 +12,8 @@ public class Centroid implements WritableComparable<Centroid> {
     private IntWritable centroidID;
     private Point point;
 
+    public Centroid() {
+    }
 
     public Centroid(IntWritable centroidID, Point point) {
         this.centroidID = centroidID;
@@ -36,6 +38,15 @@ public class Centroid implements WritableComparable<Centroid> {
      * @param centroid Centroid object to compare against the current centroid
      * @return an integer based on the comparison result (-1, 0 or 1)
      */
+
+    public void setCentroidID(IntWritable centroidID) {
+        this.centroidID = centroidID;
+    }
+
+    public void setPoint(Point point) {
+        this.point = point;
+    }
+
     @Override
     public int compareTo(Centroid centroid) {
         //initialize the centroid IDs to compare
