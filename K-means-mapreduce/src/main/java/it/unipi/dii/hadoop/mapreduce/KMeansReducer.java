@@ -37,12 +37,5 @@ public class KMeansReducer extends Reducer<IntWritable, Point, IntWritable, Text
         context.write(centroidID, new Text(nextCentroid.toString()));
     }
 
-
-    /*
-    ??CLENAUP
-        1. chiusura file oppure liberare spazio
-     */
-
-
-
+    //public void cleanup() {}
 }

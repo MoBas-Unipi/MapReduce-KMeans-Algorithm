@@ -158,7 +158,7 @@ public class Utils {
         return centroids;
     }
 
-    //TODO test
+    
     /**
      * Split a string by "," characters and creates a list of doubles representing the coordinates
      * @param text text representing the point's coordinates to split
@@ -174,7 +174,6 @@ public class Utils {
     }
 
 
-    //TODO test
     /**
      * Compute the Euclidean distance between two points
      * Math explanation: square root of the sum of the squares of the differences for each coordinate

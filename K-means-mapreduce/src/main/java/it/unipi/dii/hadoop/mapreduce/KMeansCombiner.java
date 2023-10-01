@@ -37,4 +37,6 @@ public class KMeansCombiner extends Reducer<IntWritable, Point, IntWritable, Poi
         context.write(centroidID,partialSumPoint);
     }
 
+    //public void cleanup() {}
+
 }

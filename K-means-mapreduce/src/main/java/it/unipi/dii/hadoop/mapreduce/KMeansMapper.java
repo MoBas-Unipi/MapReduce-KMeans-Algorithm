@@ -15,7 +15,6 @@ public class KMeansMapper extends Mapper<Object, Text, IntWritable, Point> {
     private List<Centroid> centroids;
     private Utils utils = new Utils();
 
-    //TODO test
     /**
      *Setup function of the KMeansMapper class.
      * initializes and loads the list of centroids saved in the Hadoop configuration to be used in the Mapper function
@@ -26,7 +25,6 @@ public class KMeansMapper extends Mapper<Object, Text, IntWritable, Point> {
         this.centroids = utils.readCentroidsInConfiguration();
     }
 
-    //TODO test
     /**
      * Map function of the KMeansMapper class.
      * 1.create a Point object from the text received
