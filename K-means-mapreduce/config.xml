@@ -13,12 +13,6 @@
     </property>
 
     <property>
-        <name>distance</name>
-        <value>2</value>
-        <final>true</final>
-    </property>
-
-    <property>
         <name>reducers_number</name>
         <value>1</value>
         <final>true</final>
