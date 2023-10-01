@@ -66,10 +66,7 @@ public class Centroid implements WritableComparable<Centroid> {
      */
     @Override
     public void write(DataOutput dataOutput) throws IOException {
-        //serialize the centroid id
-        dataOutput.writeInt(this.centroidID.get());
-
-        //serialize the point object (custom object)
+        this.centroidID.write(dataOutput);
         this.point.write(dataOutput);
     }
 

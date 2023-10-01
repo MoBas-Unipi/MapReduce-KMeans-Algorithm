@@ -43,7 +43,7 @@ public class KMeansMapper extends Mapper<Object, Text, IntWritable, Point> {
     @Override
     public void map(Object key, Text value, Context context) throws IOException, InterruptedException {
         //1.create the Point object
-        List<Double> coordinates = utils.splitInCoordinates(value.toString());
+        List<Double> coordinates = utils.splitInCoordinates(String.valueOf(value));
         Point point = new Point(coordinates);
 
         //initialize variables to write/emit

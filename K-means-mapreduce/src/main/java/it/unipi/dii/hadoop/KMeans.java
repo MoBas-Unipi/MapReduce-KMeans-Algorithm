@@ -35,15 +35,16 @@ public class KMeans {
     private int maxIterations;
     private FileSystem hdfs;
 
+
+    //TODO provare a fare le funzioni "public static"
     public void setParameters(String[] args , Configuration conf){
-        conf.addResource(new Path("config.xml"));
         this.inputPath = new Path(args[0]);
         this.outputPath = new Path(args[1]);
         this.pointsNumber = conf.getInt("points_number",1000); //n
         this.clustersNumber = conf.getInt("clusters_number", 4); //k
         this.reducersNumber = conf.getInt("reducers_number", 1);
         this.threshold = conf.getFloat("threshold", 0.0001F);
-        this.maxIterations = conf.getInt("max_iterations", 50);
+        this.maxIterations = conf.getInt("max_iterations", 30);
     }
 
     /**
@@ -118,17 +119,17 @@ public class KMeans {
     public Job configureJob(int iteration, Configuration conf) throws IOException, InterruptedException, ClassNotFoundException {
         System.out.println(Arrays.toString(conf.getStrings("centroids")));
         Job job = Job.getInstance(conf, "K-Means-Job-n-" + iteration);
-        job.setJarByClass(Application.class);
+        job.setJarByClass(KMeans.class);
         job.setMapperClass(KMeansMapper.class);
         job.setCombinerClass(KMeansCombiner.class);
-        job.setReducerClass(KMeansReducer.class);
         job.setMapOutputKeyClass(IntWritable.class);
         job.setMapOutputValueClass(Point.class);
+        job.setNumReduceTasks(reducersNumber);
+        job.setReducerClass(KMeansReducer.class);
         job.setOutputKeyClass(IntWritable.class);
         job.setOutputValueClass(Text.class);
-        job.setNumReduceTasks(this.reducersNumber);
-        FileInputFormat.addInputPath(job, this.inputPath);
-        FileOutputFormat.setOutputPath(job, this.outputPath);
+        FileInputFormat.addInputPath(job, inputPath);
+        FileOutputFormat.setOutputPath(job, outputPath);
 
         return job;
 

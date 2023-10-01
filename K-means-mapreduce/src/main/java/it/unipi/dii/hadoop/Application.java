@@ -2,6 +2,7 @@ package it.unipi.dii.hadoop;
 
 import it.unipi.dii.hadoop.model.Centroid;
 import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.mapreduce.Job;
 
 import java.io.IOException;
@@ -17,7 +18,10 @@ public class Application {
             System.err.println("Error! Usage: <input path> <output path>");
             System.exit(1);
         }
+
         Configuration conf = new Configuration();
+        conf.addResource(new Path("config.xml"));
+
         //create configuration object and load config file and set parameters
         utils.setParameters(args,conf);
         // check if the number of iterations is set correctly

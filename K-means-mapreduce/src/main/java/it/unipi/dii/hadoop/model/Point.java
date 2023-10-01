@@ -85,13 +85,12 @@ public class Point implements Writable {
      */
     @Override
     public void readFields(DataInput dataInput) throws IOException {
-        //instantiate the empty coordinate list
         this.coordinates = new ArrayList<>();
-        //deserialize coordinates attribute and add to the coordinates attribute
-        for (int i = 0; i < dataInput.readInt(); i++) {
-            this.coordinates.add(dataInput.readDouble());
+        int size = dataInput.readInt();
+        for (int i = 0; i < size; i++) {
+            double value = dataInput.readDouble();
+            this.coordinates.add(value);
         }
-        //deserialize partial sums counter and add to partialPointsCounter attribute
         this.partialPointsCounter = dataInput.readInt();
     }
 

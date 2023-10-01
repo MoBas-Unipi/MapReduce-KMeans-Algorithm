@@ -8,7 +8,7 @@ import org.apache.hadoop.mapreduce.Reducer;
 import java.io.IOException;
 import java.util.Iterator;
 
-public class KMeansReducer extends Reducer<IntWritable, Point, IntWritable, Text> {
+public class KMeansReducer extends Reducer<IntWritable, Point, Text, Text> {
 
     /**
      * Reduce function of the KMeansReducer class.
@@ -36,7 +36,7 @@ public class KMeansReducer extends Reducer<IntWritable, Point, IntWritable, Text
         nextCentroid.averageCoordinates();
 
         //3.emit/write of the pair (centroidID, updated centroid)
-        context.write(centroidID, new Text(nextCentroid.toString()));
+        context.write(new Text(String.valueOf(centroidID)), new Text(String.valueOf(nextCentroid)));
     }
 
     //public void cleanup() {}
