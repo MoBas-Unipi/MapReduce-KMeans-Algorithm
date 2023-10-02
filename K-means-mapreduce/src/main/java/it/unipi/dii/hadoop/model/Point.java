@@ -22,6 +22,11 @@ public class Point implements Writable {
         this.partialPointsCounter = 1;
     }
 
+    public Point() {
+        this.coordinates = new ArrayList<>();
+        this.partialPointsCounter = 1;
+    }
+
     /**
      * Sum the point coordinates with the coordinates of the point passed as parameter
      * @param point point with the coordinates to sum with the
@@ -102,4 +107,5 @@ public class Point implements Writable {
         }
         return sb.toString().trim();
     }
+
 }

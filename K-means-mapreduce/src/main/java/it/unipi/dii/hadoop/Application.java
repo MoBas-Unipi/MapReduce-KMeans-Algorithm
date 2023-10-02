@@ -6,11 +6,11 @@ import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.mapreduce.Job;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 
 public class Application {
-    private final static KMeans utils = new KMeans();
 
     public static void main (String[] args) throws IOException, InterruptedException, ClassNotFoundException {
         //check number of arguments
@@ -22,55 +22,65 @@ public class Application {
         Configuration conf = new Configuration();
         conf.addResource(new Path("config.xml"));
 
-        //create configuration object and load config file and set parameters
-        utils.setParameters(args,conf);
+        //set parameters loaded from config.xml
+        final Path inputPath = new Path(args[0]);
+        final Path outputPath = new Path(args[1]);
+        final int pointsNumber = conf.getInt("points_number",1000); //n
+        final int clustersNumber = conf.getInt("clusters_number", 4); //k
+        final int reducersNumber = conf.getInt("reducers_number", 1);
+        final Float threshold = conf.getFloat("threshold", 0.0001F);
+        final int maxIterations = conf.getInt("max_iterations", 30);
+
+
         // check if the number of iterations is set correctly
-        if (utils.getMaxIterations() < 1) {
+        if (maxIterations < 1) {
             System.err.println("Error! Define value 'max_iterations' as >= 1");
             System.exit(1);
         }
 
         //centroids set generation
-        List<Centroid> initialCentroids = utils.generateInitialCentroids(conf);
+        List<Centroid> initialCentroids = KMeans.generateInitialCentroids(conf, clustersNumber, pointsNumber, inputPath);
 
         //add centroids set to Hadoop Configuration
-        utils.setCentroidsInConfiguration(initialCentroids,conf);
+        KMeans.setCentroidsInConfiguration(initialCentroids,conf);
 
+        //start map reduce execution iterations
         int currentIteration = 1;
         boolean convergenceCondition = false;
 
         while (!convergenceCondition){
+            System.out.println("Application() - ITERATION: " + currentIteration);
             // Delete output path files if exist
-            utils.clearOutputPath();
+            KMeans.clearOutputPath(conf, outputPath);
+
+
             // Configure and execute Job
-
-
-            Job job = utils.configureJob(currentIteration,conf);
-            try{
-                if (!job.waitForCompletion(true)){
-                    System.err.println("Error in the configuration or execution of the job");
+            try(Job job = KMeans.configureJob(currentIteration,conf, reducersNumber, inputPath, outputPath);){
+                if (!job.waitForCompletion(true)) {
+                    System.err.println("Error in the execution of the job");
                     System.exit(1);
                 }
             } catch (IOException | InterruptedException | ClassNotFoundException e) {
-                System.err.println("Error in the configuration or execution of the job");
+                System.err.println("Error in the configuration of the job");
                 e.printStackTrace();
             }
+
             // Read computed centroids list from the output files
-            List<Centroid> computedCentroids = utils.readComputedCentroids();
-            for (Centroid centroid : computedCentroids){
-                System.out.println("CENTROID ID: "+ centroid.getCentroidID());
-                System.out.println("COORDINATES: "+centroid.getPoint().getCoordinates() + "\n");
-            }
+            List<Centroid> computedCentroids = KMeans.readComputedCentroids(conf, outputPath);
             // Compute the centroids shift
-            double centroidsShift = utils.computeCentroidsShift(computedCentroids, conf);
+            double centroidsShift = KMeans.computeCentroidsShift(computedCentroids, conf);
 
             // Check the convergence condition
-            convergenceCondition = utils.isConverged(centroidsShift, currentIteration);
+            convergenceCondition = KMeans.isConverged(centroidsShift, currentIteration, threshold, maxIterations);
             if (!convergenceCondition){
                 // Set the current computed centroids in configuration
-                utils.setCentroidsInConfiguration(computedCentroids,conf);
-                System.out.println("ITERATION: " + currentIteration);
+                KMeans.setCentroidsInConfiguration(computedCentroids,conf);
                 currentIteration++;
+            } else {
+                System.out.println("Application() - FINAL CENTROIDS : ");
+                for (Centroid centroid : computedCentroids) {
+                    System.out.println(centroid.getPoint().toString());
+                }
             }
         }
     }

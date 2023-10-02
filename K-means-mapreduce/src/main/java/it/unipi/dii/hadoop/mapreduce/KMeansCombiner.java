@@ -9,6 +9,7 @@ import java.util.Iterator;
 
 public class KMeansCombiner extends Reducer<IntWritable, Point, IntWritable, Point> {
 
+    private int index = 0;
     /**
      * Combine function (mini-reducer) of the KMeansCombiner class.
      * Receives a list of Points associated to a specific centroid and then:
@@ -20,10 +21,8 @@ public class KMeansCombiner extends Reducer<IntWritable, Point, IntWritable, Poi
      * @throws IOException
      * @throws InterruptedException
      */
-    @Override
     public void reduce(IntWritable centroidID, Iterable<Point> pointsList, Context context) throws IOException, InterruptedException {
         //definition of an iterator for the points list
-        System.out.println("FUNZIONA COMBINER");
         Iterator<Point> pointsIterator = pointsList.iterator();
 
         //definition of the point that holds the coordinates partial sum
@@ -37,7 +36,5 @@ public class KMeansCombiner extends Reducer<IntWritable, Point, IntWritable, Poi
         //2. emit/write of the pair (centroidID, partialSumPoint)
         context.write(centroidID,partialSumPoint);
     }
-
-    //public void cleanup() {}
 
 }

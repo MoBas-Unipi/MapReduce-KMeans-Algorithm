@@ -5,7 +5,7 @@ import seaborn as sns
 
 # Set the parameters for data generation
 n = 1000  # Number of data points
-d = 2  # Number of dimensions
+d = 3  # Number of dimensions
 k = 4  # Number of clusters
 
 # Generate synthetic data using make_blobs function

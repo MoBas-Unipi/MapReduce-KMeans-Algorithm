@@ -12,12 +12,16 @@ public class Centroid implements WritableComparable<Centroid> {
     private IntWritable centroidID;
     private Point point;
 
-    public Centroid() {
+
+
+    public Centroid(int centroidID, Point point) {
+        this.centroidID = new IntWritable(centroidID);
+        this.point = point;
     }
 
-    public Centroid(IntWritable centroidID, Point point) {
-        this.centroidID = centroidID;
-        this.point = point;
+    public Centroid() {
+        this.centroidID = new IntWritable();
+        this.point = new Point();
     }
 
     public IntWritable getCentroidID() {
@@ -35,7 +39,7 @@ public class Centroid implements WritableComparable<Centroid> {
      *  -1: if the currentCentroidID is less than the centroidID passed as parameter
      *   0: if they are equal
      *   1: if the currentCentroidID is greater than the centroidID passed as parameter
-     * @param centroid Centroid object to compare against the current centroid
+     * @param centroidID Centroid object to compare against the current centroid
      * @return an integer based on the comparison result (-1, 0 or 1)
      */
 
@@ -54,7 +58,7 @@ public class Centroid implements WritableComparable<Centroid> {
         int centroidIDtoCompare = Integer.parseInt(String.valueOf(centroid.getCentroidID()));
 
         //compare the centroid IDs and return a value as following
-        return (currentCentroidID < centroidIDtoCompare ? -1 : (currentCentroidID == centroidIDtoCompare ? 0 : 1));
+        return (Integer.compare(currentCentroidID, centroidIDtoCompare));
 
     }
 
