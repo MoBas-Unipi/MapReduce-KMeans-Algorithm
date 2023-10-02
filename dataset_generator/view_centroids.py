@@ -11,7 +11,7 @@ def read_points_from_file(filename):
             elif len(parts) == 3:
                 x, y = float(parts[1]), float(parts[2])
             else:
-                continue  # Skip lines with less than 2 or 3 values
+                continue  
             points.append((x, y))
     return points
 
