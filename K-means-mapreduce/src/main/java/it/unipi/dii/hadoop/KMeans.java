@@ -14,16 +14,12 @@ import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
-import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
-import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.lang.reflect.Array;
 import java.util.*;
-import java.util.stream.Collectors;
 
 
 public class KMeans {
@@ -72,7 +68,6 @@ public class KMeans {
         return initialCentroids;
     }
 
-
     /**
      * Set the initial centroids in the Hadoop Configuration (storage of initial centroids)
      *
@@ -111,7 +106,6 @@ public class KMeans {
         FileOutputFormat.setOutputPath(job, outputPath);
 
         return job;
-
     }
 
     /**
@@ -143,7 +137,6 @@ public class KMeans {
      *
      * @return A list of computed centroids.
      */
-
     public static List<Centroid> readComputedCentroids(Configuration conf, Path outputPath) throws IOException {
         List<Centroid> computedCentroids = new ArrayList<>();
         FileSystem hdfs = FileSystem.get(conf);
@@ -185,13 +178,10 @@ public class KMeans {
         return computedCentroids;
     }
 
-
-
     /**
      * Read the set of centroid stored in the Hadoop configuration
      * @return a list of centroids
      */
-
     public static List<Centroid> readCentroidsInConfiguration(Configuration conf) {
         //create a list to store the read centroids set
         List<Centroid> centroids = new ArrayList<>();
@@ -210,7 +200,6 @@ public class KMeans {
         return centroids;
     }
 
-
     /**
      * Split a string by "," characters and creates a list of doubles representing the coordinates
      * @param text text representing the point's coordinates to split
@@ -224,7 +213,6 @@ public class KMeans {
         }
         return coordinates;
     }
-
 
     /**
      * Compute the Euclidean distance between two points
@@ -243,7 +231,14 @@ public class KMeans {
         return Math.sqrt(sum);
     }
 
-
+    /**
+     * Clears the specified output path in the Hadoop Distributed FileSystem (HDFS).
+     * If the output path exists, it is recursively deleted.
+     *
+     * @param conf The Hadoop Configuration object.
+     * @param outputPath The Hadoop Path object representing the output path to be cleared.
+     * @throws IOException If an I/O error occurs while attempting to delete the output path.
+     */
     public static void clearOutputPath(Configuration conf, Path outputPath) throws IOException {
         FileSystem hdfs = FileSystem.get(conf);
         try {
@@ -258,10 +253,16 @@ public class KMeans {
     }
 
     /**
+     * Checks if the convergence criterion for the K-Means algorithm is satisfied.
+     * The convergence criterion is satisfied if one of the following conditions is met:
+     * 1. The total difference (shift) of all centroids is less than the specified threshold.
+     * 2. The current iteration has reached the maximum number of iterations.
      *
-     * @param shift total difference of all centroids
-     * @param currentIteration current iteration
-     * @return true if the convergence criterion is satisfied
+     * @param shift The total difference of all centroids.
+     * @param currentIteration The current iteration number.
+     * @param threshold The convergence threshold to determine when to stop iterating.
+     * @param maxIterations The maximum number of iterations allowed for the algorithm.
+     * @return {@code true} if the convergence criterion is satisfied, {@code false} otherwise.
      */
     public static boolean isConverged(double shift, int currentIteration, Float threshold, int maxIterations) {
         return shift < threshold || currentIteration == maxIterations;

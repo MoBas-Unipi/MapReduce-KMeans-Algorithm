@@ -12,7 +12,7 @@ import java.util.List;
 public class Application {
 
     public static void main (String[] args) throws IOException {
-        //check number of arguments
+        // Check number of arguments
         if (args.length != 2) {
             System.err.println("Error! Usage: <input path> <output path>");
             System.exit(1);
@@ -21,7 +21,7 @@ public class Application {
         Configuration conf = new Configuration();
         conf.addResource(new Path("config.xml"));
 
-        //set parameters loaded from config.xml
+        // Set parameters loaded from config.xml
         final Path inputPath = new Path(args[0]);
         final Path outputPath = new Path(args[1]);
         final int pointsNumber = conf.getInt("points_number",1000); //n
@@ -31,30 +31,29 @@ public class Application {
         final int maxIterations = conf.getInt("max_iterations", 30);
 
 
-        // check if the number of iterations is set correctly
+        // Check if the number of iterations is set correctly
         if (maxIterations < 1) {
             System.err.println("Error! Define value 'max_iterations' as >= 1");
             System.exit(1);
         }
 
-        //centroids set generation
+        // Centroids set generation
         List<Centroid> initialCentroids = KMeans.generateInitialCentroids(conf, clustersNumber, pointsNumber, inputPath);
 
-        //add centroids set to Hadoop Configuration
+        // Add centroids set to Hadoop Configuration
         KMeans.setCentroidsInConfiguration(initialCentroids,conf);
 
-        //start map reduce execution iterations
+        // Start map reduce execution iterations
         int currentIteration = 1;
         boolean convergenceCondition = false;
 
         while (!convergenceCondition){
             System.out.println("Application() - ITERATION: " + currentIteration);
-            // Delete output path files if exist
+            // Delete output path files if exists
             KMeans.clearOutputPath(conf, outputPath);
 
-
             // Configure and execute Job
-            try(Job job = KMeans.configureJob(currentIteration,conf, reducersNumber, inputPath, outputPath);){
+            try(Job job = KMeans.configureJob(currentIteration, conf, reducersNumber, inputPath, outputPath)){
                 if (!job.waitForCompletion(true)) {
                     System.err.println("Error in the execution of the job");
                     System.exit(1);
@@ -73,7 +72,7 @@ public class Application {
             convergenceCondition = KMeans.isConverged(centroidsShift, currentIteration, threshold, maxIterations);
             if (!convergenceCondition){
                 // Set the current computed centroids in configuration
-                KMeans.setCentroidsInConfiguration(computedCentroids,conf);
+                KMeans.setCentroidsInConfiguration(computedCentroids, conf);
                 currentIteration++;
             } else {
                 System.out.println("Application() - FINAL CENTROIDS : ");

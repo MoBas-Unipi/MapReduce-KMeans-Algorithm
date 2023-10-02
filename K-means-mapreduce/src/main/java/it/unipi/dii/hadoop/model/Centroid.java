@@ -12,8 +12,6 @@ public class Centroid implements WritableComparable<Centroid> {
     private IntWritable centroidID;
     private Point point;
 
-
-
     public Centroid(int centroidID, Point point) {
         this.centroidID = new IntWritable(centroidID);
         this.point = point;
@@ -32,17 +30,6 @@ public class Centroid implements WritableComparable<Centroid> {
         return point;
     }
 
-    /**
-     * Override IntWritable class compareTo function.
-     * function used for the shuffle and sort operation.
-     * compares two centroid ids and returns the following values based on the result:
-     *  -1: if the currentCentroidID is less than the centroidID passed as parameter
-     *   0: if they are equal
-     *   1: if the currentCentroidID is greater than the centroidID passed as parameter
-     * @param centroidID Centroid object to compare against the current centroid
-     * @return an integer based on the comparison result (-1, 0 or 1)
-     */
-
     public void setCentroidID(IntWritable centroidID) {
         this.centroidID = centroidID;
     }
@@ -51,6 +38,16 @@ public class Centroid implements WritableComparable<Centroid> {
         this.point = point;
     }
 
+    /**
+     * Override IntWritable class compareTo function.
+     * function used for the shuffle and sort operation.
+     * compares two centroid ids and returns the following values based on the result:
+     *  -1: if the currentCentroidID is less than the centroidID passed as parameter
+     *   0: if they are equal
+     *   1: if the currentCentroidID is greater than the centroidID passed as parameter
+     * @param centroid Centroid object to compare against the current centroid
+     * @return an integer based on the comparison result (-1, 0 or 1)
+     */
     @Override
     public int compareTo(Centroid centroid) {
         //initialize the centroid IDs to compare
