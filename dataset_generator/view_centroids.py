@@ -8,7 +8,7 @@ def read_points_from_file(filename):
             parts = line.strip().split()
             if len(parts) == 2:
                 x, y = float(parts[0]), float(parts[1])
-            elif len(parts) >= 3:
+            elif len(parts) == 3:
                 x, y = float(parts[1]), float(parts[2])
             else:
                 continue  # Skip lines with less than 2 or 3 values
