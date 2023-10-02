@@ -6,13 +6,12 @@ import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.mapreduce.Job;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 
 public class Application {
 
-    public static void main (String[] args) throws IOException, InterruptedException, ClassNotFoundException {
+    public static void main (String[] args) throws IOException {
         //check number of arguments
         if (args.length != 2) {
             System.err.println("Error! Usage: <input path> <output path>");

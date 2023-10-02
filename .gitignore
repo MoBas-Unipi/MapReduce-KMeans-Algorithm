@@ -2,3 +2,4 @@
 dataset_generator/.idea/
 .idea/
 out/
+K-means-mapreduce/output/
