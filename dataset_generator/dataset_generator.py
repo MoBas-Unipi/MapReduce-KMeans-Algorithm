@@ -1,3 +1,4 @@
+import os
 from sklearn.datasets import make_blobs
 from matplotlib import pyplot
 from pandas import DataFrame
@@ -5,14 +6,23 @@ import seaborn as sns
 
 # Set the parameters for data generation
 n = 1000  # Number of data points
-d = 3  # Number of dimensions
+d = 2  # Number of dimensions
 k = 4  # Number of clusters
 
 # Generate synthetic data using make_blobs function
 points, y = make_blobs(n_samples=n, centers=k, n_features=d)
 
-# Save the generated dataset to a file
-with open(f"dataset_{d}_dim_{k}_clusters.txt", "w") as file:
+# Define the folder path
+folder_path = 'datasets'
+
+# Create the 'datasets' folder if it doesn't exist
+os.makedirs(folder_path, exist_ok=True)
+
+# Define the file path inside the 'datasets' folder
+file_path = os.path.join(folder_path, f"n_{n}_d_{d}_k_{k}.txt")
+
+# Save the generated dataset to a file inside the 'datasets' folder
+with open(file_path, "w") as file:
     for point in points:
         for value in range(d):
             if value == (d - 1):
