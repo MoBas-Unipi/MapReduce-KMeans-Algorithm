@@ -23,7 +23,7 @@ output_file = "../K-means-mapreduce/output/part-r-00000"  # Replace with the act
 dataset_points = read_points_from_file(dataset_file)
 computed_centroids = read_points_from_file(output_file)
 
-# Create a scatterplot for the dataset points (all of the same color)
+# Create a scatterplot for the dataset points
 dataset_x, dataset_y = zip(*dataset_points)
 plt.scatter(dataset_x, dataset_y, label="Dataset Points")
 
