@@ -201,7 +201,7 @@ public class KMeans {
     }
 
     /**
-     * Split a string by "," characters and creates a list of doubles representing the coordinates
+     * Split a string by spaces and creates a list of doubles representing the coordinates
      * @param text text representing the point's coordinates to split
      * @return coordinates in List<Double> format
      */
