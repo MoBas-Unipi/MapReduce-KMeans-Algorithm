@@ -9,7 +9,6 @@ import java.util.Iterator;
 
 public class KMeansCombiner extends Reducer<IntWritable, Point, IntWritable, Point> {
 
-    private int index = 0;
     /**
      * Combine function (mini-reducer) of the KMeansCombiner class.
      * Receives a list of Points associated to a specific centroid and then:
