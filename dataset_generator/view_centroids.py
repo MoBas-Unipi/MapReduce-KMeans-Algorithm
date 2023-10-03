@@ -1,4 +1,6 @@
 import matplotlib.pyplot as plt
+from sklearn.cluster import KMeans
+import numpy as np
 
 # Function to read points from a file and return them as a list of tuples
 def read_points_from_file(filename):
@@ -19,6 +21,9 @@ def read_points_from_file(filename):
 dataset_file = "datasets/n_1000_d_2_k_4.txt"
 output_file = "../K-means-mapreduce/output/part-r-00000"
 
+# Number of clusters
+n_clusters = 4
+
 # Read points from the two files
 dataset_points = read_points_from_file(dataset_file)
 computed_centroids = read_points_from_file(output_file)
@@ -27,9 +32,18 @@ computed_centroids = read_points_from_file(output_file)
 dataset_x, dataset_y = zip(*dataset_points)
 plt.scatter(dataset_x, dataset_y, label="Dataset Points")
 
-# Create a scatterplot for the cetroids (in a different color)
-other_x, other_y = zip(*computed_centroids)
-plt.scatter(other_x, other_y, label="Centroids", color="red")
+# Create a scatterplot for the computed centroids from the output file (in red)
+centroid_x, centroid_y = zip(*computed_centroids)
+plt.scatter(centroid_x, centroid_y, label="Computed Centroids", color="red", marker="x")
+
+# Compute centroids using KMeans clustering only on the dataset points
+kmeans = KMeans(n_clusters, init='random', max_iter=30) 
+kmeans.fit(dataset_points)
+centroids = kmeans.cluster_centers_
+
+# Create a scatterplot for the centroids computed with KMeans (in blue)
+centroid_x, centroid_y = zip(*centroids)
+plt.scatter(centroid_x, centroid_y, label="sklearn KMean centroids", color="yellow", marker="o")
 
 # Set labels and legend
 plt.xlabel("X")
