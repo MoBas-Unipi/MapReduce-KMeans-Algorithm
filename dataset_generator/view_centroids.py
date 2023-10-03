@@ -15,9 +15,9 @@ def read_points_from_file(filename):
             points.append((x, y))
     return points
 
-# File paths for your dataset and the other file
+# File paths for the dataset and the output file
 dataset_file = "datasets/n_1000_d_2_k_4.txt"
-output_file = "../K-means-mapreduce/output/part-r-00000"  # Replace with the actual path to your other file
+output_file = "../K-means-mapreduce/output/part-r-00000"
 
 # Read points from the two files
 dataset_points = read_points_from_file(dataset_file)
@@ -27,9 +27,9 @@ computed_centroids = read_points_from_file(output_file)
 dataset_x, dataset_y = zip(*dataset_points)
 plt.scatter(dataset_x, dataset_y, label="Dataset Points")
 
-# Create a scatterplot for the other points (in a different color)
+# Create a scatterplot for the cetroids (in a different color)
 other_x, other_y = zip(*computed_centroids)
-plt.scatter(other_x, other_y, label="Other Points", color="red")
+plt.scatter(other_x, other_y, label="Centroids", color="red")
 
 # Set labels and legend
 plt.xlabel("X")
