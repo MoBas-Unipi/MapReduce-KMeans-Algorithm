@@ -10,7 +10,7 @@ d = 2  # Number of dimensions
 k = 4  # Number of clusters
 
 # Generate synthetic data using make_blobs function
-points, y = make_blobs(n_samples=n, centers=k, n_features=d, random_state=1, cluster_std=1.2)
+points, y = make_blobs(n_samples=n, centers=k, n_features=d, random_state=1 , cluster_std=0.5)
 
 # Define the folder path
 folder_path = 'datasets'

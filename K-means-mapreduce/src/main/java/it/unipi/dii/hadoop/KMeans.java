@@ -129,6 +129,7 @@ public class KMeans {
             centroidShift += distance;
         }
         // Return the total shift of all centroids
+        System.out.println("KMeans() - Shfit computed : " + centroidShift);
         return centroidShift;
     }
 

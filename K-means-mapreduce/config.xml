@@ -2,7 +2,7 @@
 <configuration>
     <property>
         <name>points_number</name>
-        <value>1000</value>
+        <value>10000</value>
         <final>true</final>
     </property>
     <property>
@@ -12,7 +12,7 @@
     </property>
     <property>
         <name>reducers_number</name>
-        <value>3</value>
+        <value>1</value>
         <final>true</final>
     </property>
     <property>
@@ -22,7 +22,7 @@
     </property>
     <property>
         <name>max_iterations</name>
-        <value>3</value>
+        <value>20</value>
         <final>true</final>
     </property>
 </configuration>

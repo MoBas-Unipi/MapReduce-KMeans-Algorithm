@@ -19,7 +19,7 @@ def read_points_from_file(filename):
 
 # File paths for the dataset and the output file
 dataset_file = "datasets/n_1000_d_2_k_4.txt"
-output_file = "../K-means-mapreduce/output/part-r-00000"
+output_file = "../K-means-mapreduce/output/results/part-r-00000"
 
 # Number of clusters
 n_clusters = 4
