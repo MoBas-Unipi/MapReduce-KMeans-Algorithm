@@ -18,18 +18,18 @@ public class Application {
             System.exit(1);
         }
 
+        // Create Configuration object and load configuration from the specified XML file.
         Configuration conf = new Configuration();
         conf.addResource(new Path("config.xml"));
 
         // Set parameters loaded from config.xml
         final Path inputPath = new Path(args[0]);
         final Path outputPath = new Path(args[1]);
-        final int pointsNumber = conf.getInt("points_number",1000); //n
-        final int clustersNumber = conf.getInt("clusters_number", 4); //k
+        final int pointsNumber = conf.getInt("points_number",1000); // n
+        final int clustersNumber = conf.getInt("clusters_number", 4); // k
         final int reducersNumber = conf.getInt("reducers_number", 1);
         final Float threshold = conf.getFloat("threshold", 0.0001F);
         final int maxIterations = conf.getInt("max_iterations", 30);
-
 
         // Check if the number of iterations is set correctly
         if (maxIterations < 1) {

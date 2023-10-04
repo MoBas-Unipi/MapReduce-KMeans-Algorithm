@@ -33,7 +33,7 @@ public class KMeans {
         Set<Integer> initialCentroidPositions = new TreeSet<>();
         List<Centroid> initialCentroids = new ArrayList<>();
 
-        Random random = new Random();
+        Random random = new Random(1);
 
         // Generate random line numbers as initial centroid positions
         while (initialCentroidPositions.size() != clustersNumber) {
@@ -129,6 +129,7 @@ public class KMeans {
             centroidShift += distance;
         }
         // Return the total shift of all centroids
+        System.out.println("KMeans() - Shfit computed : " + centroidShift);
         return centroidShift;
     }
 
