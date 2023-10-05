@@ -1,3 +1,4 @@
+import os
 import matplotlib.pyplot as plt
 from sklearn.cluster import KMeans
 import numpy as np
@@ -17,12 +18,14 @@ def read_points_from_file(filename):
             points.append((x, y))
     return points
 
-# File paths for the dataset and the output file
-dataset_file = "datasets/n_1000_d_2_k_4.txt"
-output_file = "../K-means-mapreduce/output/results/part-r-00000"
+# Parameters definition
+n = 1000
+d = 2
+k = 4
 
-# Number of clusters
-n_clusters = 4
+# File paths for the dataset and the output file
+dataset_file = f"datasets/n_{n}_d_{d}_k_{k}.txt"
+output_file = "../K-means-mapreduce/output/part-r-00000"
 
 # Read points from the two files
 dataset_points = read_points_from_file(dataset_file)
@@ -37,7 +40,7 @@ centroid_x, centroid_y = zip(*computed_centroids)
 plt.scatter(centroid_x, centroid_y, label="Computed Centroids", color="red", marker="x")
 
 # Compute centroids using KMeans clustering only on the dataset points
-kmeans = KMeans(n_clusters, init='random', max_iter=30) 
+kmeans = KMeans(n_clusters=k, init='random', n_init=5, max_iter=30) 
 kmeans.fit(dataset_points)
 centroids = kmeans.cluster_centers_
 
@@ -50,5 +53,8 @@ plt.xlabel("X")
 plt.ylabel("Y")
 plt.legend()
 
+# Create the 'plots' folder if it doesn't exist
+os.makedirs('plots', exist_ok=True)
+
 # Show the plot
-plt.show()
+plt.savefig(f"plots/results_n_{n}_d_{d}_k_{k}.png")

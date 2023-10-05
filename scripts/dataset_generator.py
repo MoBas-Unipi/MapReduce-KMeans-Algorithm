@@ -12,14 +12,14 @@ k = 4  # Number of clusters
 # Generate synthetic data using make_blobs function
 points, y = make_blobs(n_samples=n, centers=k, n_features=d, random_state=1 , cluster_std=0.5)
 
-# Define the folder path
-folder_path = 'datasets'
-
 # Create the 'datasets' folder if it doesn't exist
-os.makedirs(folder_path, exist_ok=True)
+os.makedirs('datasets', exist_ok=True)
+
+# Create the 'plots' folder if it doesn't exist
+os.makedirs('plots', exist_ok=True)
 
 # Define the file path inside the 'datasets' folder
-file_path = os.path.join(folder_path, f"n_{n}_d_{d}_k_{k}.txt")
+file_path = os.path.join('datasets', f"n_{n}_d_{d}_k_{k}.txt")
 
 # Save the generated dataset to a file inside the 'datasets' folder
 with open(file_path, "w") as file:
@@ -44,4 +44,4 @@ for key, group in grouped:
     group.plot(ax=ax, kind='scatter', x='x', y='y', label=key, color=palette[key])
 
 # Show the scatterplot
-pyplot.show()
+pyplot.savefig(f"plots/dataset_n_{n}_d_{d}_k_{k}.png")
