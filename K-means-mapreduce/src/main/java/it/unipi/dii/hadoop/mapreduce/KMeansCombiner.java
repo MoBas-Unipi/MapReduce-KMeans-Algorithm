@@ -13,7 +13,7 @@ public class KMeansCombiner extends Reducer<IntWritable, Point, IntWritable, Poi
      * Combine function (mini-reducer) of the KMeansCombiner class.
      * Receives a list of Points associated to a specific centroid and then:
      * 1.creates a new point that contains the sum of the coordinates of all points in the list (each dimension separated)
-     * 2.emits a pair containing the cetroidID along with the newly created point containing the computed sum
+     * 2.emits a pair containing the centroidID along with the newly created point containing the computed sum
      * @param centroidID id of the centroid
      * @param pointsList list containing all points associated to this centroid
      * @param context context object to interact with Hadoop

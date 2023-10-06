@@ -28,7 +28,7 @@ public class KMeansMapper extends Mapper<Object, Text, IntWritable, Point> {
     /**
      * Map function of the KMeansMapper class.
      * 1.create a Point object from the text received
-     * 2.find the centroid closest to him
+     * 2.find the centroid closest to it
      * 3.emits a pair containing the chosen centroid along with the object created
      * @param key input key
      * @param value input value (point coordinates)
