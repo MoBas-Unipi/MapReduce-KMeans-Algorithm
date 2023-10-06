@@ -18,11 +18,11 @@ def read_points_from_file(filename, num_coords, skip_first=False):
                         z = float(parts[2])
                         points.append((x, y, z))
                 else:
-                    raise ValueError  
+                    raise ValueError(f"Invalid number of coordinates in line: {line}Expected {num_coords}, got {len(parts)}")
                           
     except ValueError as e:
-        print(f"Invalid number of coordinates in line: {line}. Expected {num_coords}, got {len(parts)}")                
-        sys.exit(1)
+        print(e)  
+        sys.exit(1)    
         
     return points
 
@@ -32,10 +32,7 @@ d = 3  # Set d to 2 or 3
 k = 4
 
 # Check if d is valid (either 2 or 3)
-try:
-    if d not in [2, 3]:
-        raise ValueError
-except ValueError as e:
+if d not in [2, 3]:
     print(f"Invalid value for 'd'. It should be either 2 or 3. It is {d} instead.")    
     sys.exit(1)
 
