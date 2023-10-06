@@ -81,9 +81,9 @@ elif d == 3:
     centroid_x, centroid_y, centroid_z = zip(*computed_centroids)
     ax.scatter(centroid_x, centroid_y, centroid_z, label="Computed Centroids", color="red", marker="x")
     
-    # Create a scatterplot for the centroids computed with KMeans (in yellow)
+    # Create a scatterplot for the centroids computed with KMeans (in black)
     centroid_x, centroid_y, centroid_z = zip(*centroids)
-    ax.scatter(centroid_x, centroid_y, centroid_z, label="sklearn KMeans centroids", color="violet")
+    ax.scatter(centroid_x, centroid_y, centroid_z, label="sklearn KMeans centroids", color="black")
 
 
 # Set labels and legend
