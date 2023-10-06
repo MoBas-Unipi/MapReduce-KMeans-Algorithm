@@ -67,13 +67,6 @@ if d == 2:
     centroid_x, centroid_y = zip(*centroids)
     plt.scatter(centroid_x, centroid_y, label="sklearn KMeans centroids", color="yellow")
 
-    # Set labels and legend
-    plt.legend()
-    plt.title(f"Results (n={n}, d={d}, k={k})")
-
-    # Save the plot as an image file
-    plt.savefig(f"plots/results_n_{n}_d_{d}_k_{k}.png")
-
 elif d == 3:
     # Create a scatterplot for the dataset points
     fig = plt.figure()
@@ -92,11 +85,12 @@ elif d == 3:
     centroid_x, centroid_y, centroid_z = zip(*centroids)
     ax.scatter(centroid_x, centroid_y, centroid_z, label="sklearn KMeans centroids", color="violet")
 
-    # Set labels and legend
-    plt.legend()
-    plt.title(f"Results (n={n}, d={d}, k={k})")
 
-    # Save the plot as an image file
-    plt.savefig(f"plots/results_n_{n}_d_{d}_k_{k}.png")
+# Set labels and legend
+plt.legend()
+plt.title(f"Results (n={n}, d={d}, k={k})")
+
+# Save the plot as an image file
+plt.savefig(f"plots/results_n_{n}_d_{d}_k_{k}.png")
 
 
