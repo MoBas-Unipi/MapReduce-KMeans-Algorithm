@@ -1,3 +1,4 @@
+import glob
 import os
 import sys
 import matplotlib.pyplot as plt
@@ -14,6 +15,8 @@ def read_points_from_file(filename, num_coords, skip_first=False):
                     parts = parts[1:]  # Skip the first element (centroidID)
                 if len(parts) == num_coords:
                     x, y = float(parts[0]), float(parts[1])
+                    if num_coords == 2:
+                        points.append((x,y))
                     if num_coords == 3:
                         z = float(parts[2])
                         points.append((x, y, z))
@@ -36,13 +39,19 @@ if d not in [2, 3]:
     print(f"Invalid value for 'd'. It should be either 2 or 3. It is {d} instead.")    
     sys.exit(1)
 
-# File paths for the dataset and the output file
+# File paths for the dataset and the output files matching the pattern
 dataset_file = f"datasets/n_{n}_d_{d}_k_{k}.txt"
-output_file = "../K-means-mapreduce/output/part-r-00000"
+output_files = glob.glob("../K-means-mapreduce/output/part-r-*")
 
-# Read points from the dataset and output files
+# Read points from the dataset file
 dataset_points = read_points_from_file(dataset_file, d)
-computed_centroids = read_points_from_file(output_file, d, skip_first=True)
+
+# Initialize the computed centroids list
+computed_centroids = []
+
+# Read points from all matching output files and append them to computed_centroids
+for output_file in output_files:
+    computed_centroids.extend(read_points_from_file(output_file, d, skip_first=True))
 
 # Compute centroids using KMeans clustering only on the dataset points
 kmeans = KMeans(n_clusters=k, init='random', n_init=5, max_iter=30) 
