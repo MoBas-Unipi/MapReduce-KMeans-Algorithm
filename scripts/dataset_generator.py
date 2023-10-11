@@ -6,14 +6,15 @@ import seaborn as sns
 
 # Set the parameters for data generation
 n = 1000  # Number of data points
-d = 3  # Number of dimensions (change this to either 2 or 3)
+d = 2  # Number of dimensions (change this to either 2 or 3)
 k = 4  # Number of clusters
 
 # Generate synthetic data using make_blobs function
 points, y = make_blobs(n_samples=n, centers=k, n_features=d, random_state=1, cluster_std=0.5)
 
-# Create the 'datasets' folder if it doesn't exist
+# Create 'datasets' and 'plots' folders if they don't exist
 os.makedirs('datasets', exist_ok=True)
+os.makedirs('plots', exist_ok=True)
 
 # Define the file path inside the 'datasets' folder
 file_path = os.path.join('datasets', f"n_{n}_d_{d}_k_{k}.txt")

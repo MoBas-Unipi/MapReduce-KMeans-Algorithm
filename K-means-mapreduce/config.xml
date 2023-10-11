@@ -2,7 +2,7 @@
 <configuration>
     <property>
         <name>points_number</name>
-        <value>10000</value>
+        <value>1000</value>
         <final>true</final>
     </property>
     <property>
@@ -22,7 +22,7 @@
     </property>
     <property>
         <name>max_iterations</name>
-        <value>20</value>
+        <value>30</value>
         <final>true</final>
     </property>
 </configuration>

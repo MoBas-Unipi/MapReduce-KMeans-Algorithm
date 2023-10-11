@@ -31,7 +31,7 @@ def read_points_from_file(filename, num_coords, skip_first=False):
 
 # Parameters definition
 n = 1000
-d = 3  # Set d to 2 or 3
+d = 2  # Set d to 2 or 3
 k = 4
 
 # Check if d is valid (either 2 or 3)
