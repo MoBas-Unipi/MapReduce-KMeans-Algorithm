@@ -17,12 +17,12 @@
     </property>
     <property>
         <name>threshold</name>
-        <value>0.01</value>
+        <value>3</value>
         <final>true</final>
     </property>
     <property>
         <name>max_iterations</name>
-        <value>30</value>
+        <value>2</value>
         <final>true</final>
     </property>
 </configuration>

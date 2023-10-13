@@ -29,7 +29,7 @@ public class Application {
         final int clustersNumber = conf.getInt("clusters_number", 4); // k
         final int reducersNumber = conf.getInt("reducers_number", 1);
         final Float threshold = conf.getFloat("threshold", 0.0001F);
-        final int maxIterations = conf.getInt("max_iterations", 30);
+        final int maxIterations = conf.getInt("max_iterations", 1);
 
         // Check if the number of iterations is set correctly
         if (maxIterations < 1) {
