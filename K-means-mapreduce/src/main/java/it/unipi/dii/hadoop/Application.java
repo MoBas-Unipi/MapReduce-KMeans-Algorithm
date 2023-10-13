@@ -75,6 +75,7 @@ public class Application {
                 KMeans.setCentroidsInConfiguration(computedCentroids, conf);
                 currentIteration++;
             } else {
+                // print final centroids
                 System.out.println("Application() - FINAL CENTROIDS : ");
                 for (Centroid centroid : computedCentroids) {
                     System.out.println(centroid.getPoint().toString());
