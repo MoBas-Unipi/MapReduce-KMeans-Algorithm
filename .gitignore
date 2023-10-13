@@ -2,5 +2,3 @@
 out/
 K-means-mapreduce/output/
 K-means-mapreduce/input/
-scripts/datasets/
-scripts/plots/

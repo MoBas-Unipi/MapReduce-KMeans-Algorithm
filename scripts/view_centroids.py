@@ -31,8 +31,8 @@ def read_points_from_file(filename, num_coords, skip_first=False):
 
 # Parameters definition
 n = 1000
-d = 2  # Set d to 2 or 3
-k = 4
+d = 3  # Set d to 2 or 3
+k = 3
 
 # Check if d is valid (either 2 or 3)
 if d not in [2, 3]:
@@ -41,7 +41,7 @@ if d not in [2, 3]:
 
 # File paths for the dataset and the output files matching the pattern
 dataset_file = f"datasets/n_{n}_d_{d}_k_{k}.txt"
-output_files = glob.glob("../K-means-mapreduce/output/part-r-*")
+output_files = glob.glob("output/part-r-*")
 
 # Read points from the dataset file
 dataset_points = read_points_from_file(dataset_file, d)
@@ -59,7 +59,7 @@ kmeans.fit(dataset_points)
 centroids = kmeans.cluster_centers_
 
 # Create the 'plots' folder if it doesn't exist
-os.makedirs('plots', exist_ok=True)
+os.makedirs('plots/results', exist_ok=True)
 
 if d == 2:
     # Create a scatterplot for the dataset points
@@ -100,6 +100,6 @@ plt.legend()
 plt.title(f"Results (n={n}, d={d}, k={k})")
 
 # Save the plot as an image file
-plt.savefig(f"plots/results_n_{n}_d_{d}_k_{k}.png")
+plt.savefig(f"plots/results/results_n_{n}_d_{d}_k_{k}.png")
 
 
