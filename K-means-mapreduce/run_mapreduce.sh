@@ -2,7 +2,7 @@
 
 # Check for the correct number of arguments
 if [ "$#" -ne 3 ]; then
-    echo "Usage: $0 <n> <d> <k> <test>"
+    echo "Usage: <n> <d> <k> <test>"
     exit 1
 fi
 

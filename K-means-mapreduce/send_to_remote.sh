@@ -1,4 +1,4 @@
-rm target/Hadoop_K-means-1.0-SNAPSHOT.jar
+rm target/K-means-mapreduce-1.0-SNAPSHOT.jar
 # Build and package the Java application
 mvn clean package
 

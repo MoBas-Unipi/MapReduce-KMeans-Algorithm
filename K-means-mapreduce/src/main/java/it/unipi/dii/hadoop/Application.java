@@ -25,11 +25,11 @@ public class Application {
         // Set parameters loaded from config.xml
         final Path inputPath = new Path(args[0]);
         final Path outputPath = new Path(args[1]);
-        final int pointsNumber = conf.getInt("points_number",1000); // n
-        final int clustersNumber = conf.getInt("clusters_number", 4); // k
-        final int reducersNumber = conf.getInt("reducers_number", 1);
+        final int pointsNumber = conf.getInt("pointsNumber", 1000); // n
+        final int clustersNumber = conf.getInt("clustersNumber", 4); // k
+        final int reducersNumber = conf.getInt("reducersNumber", 1);
         final Float threshold = conf.getFloat("threshold", 0.0001F);
-        final int maxIterations = conf.getInt("max_iterations", 1);
+        final int maxIterations = conf.getInt("maxIterations", 2);
 
         // Check if the number of iterations is set correctly
         if (maxIterations < 1) {
