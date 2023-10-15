@@ -6,9 +6,9 @@ import numpy as np
 from sklearn.metrics import silhouette_score, pairwise_distances_argmin_min
 
 # Parameters definition
-n = 50000 # Number of data points
+n = 1000 # Number of data points
 d = 3    # Number of dimensions
-k = 5   # Number of clusters
+k = 3   # Number of clusters
 
 # Function to read points from a file and return them as a list of tuples
 def read_points_from_file(filename, num_coords, skip_first=False):
@@ -71,16 +71,18 @@ if d == 2:
 elif d == 3:
     # Create a scatterplot for the dataset points
     fig = plt.figure()
-    ax = fig.add_subplot(111, projection='3d')
+    # ax = fig.add_subplot(111, projection='3d')
+    ax = plt.axes(projection='3d', computed_zorder=False)
+
     dataset_x, dataset_y, dataset_z = zip(*dataset_points)
-    ax.scatter(dataset_x, dataset_y, dataset_z, label="Dataset Points", alpha=0.025)
+    ax.scatter(dataset_x, dataset_y, dataset_z, label="Dataset Points", alpha=0.2, zorder=1)
     ax.set_xlabel("X")
     ax.set_ylabel("Y")
     ax.set_zlabel("Z")
 
     # Create a scatterplot for the computed centroids from the output file (in red)
     centroid_x, centroid_y, centroid_z = zip(*computed_centroids)
-    ax.scatter(centroid_x, centroid_y, centroid_z, label="Computed Centroids", color="red", marker="x")
+    ax.scatter(centroid_x, centroid_y, centroid_z, label="Computed Centroids", color="red", marker="x", alpha=0.9, zorder=2)
 
     # Create a scatterplot for the centroids computed with KMeans (in black)
     # centroid_x, centroid_y, centroid_z = zip(*centroids)
