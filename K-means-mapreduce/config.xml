@@ -2,11 +2,11 @@
 <configuration>
 	<property>
 		<name>pointsNumber</name>
-		<value>50000</value>
+		<value>100000</value>
 	</property>
 	<property>
 		<name>clustersNumber</name>
-		<value>5</value>
+		<value>7</value>
 	</property>
 	<property>
 		<name>reducersNumber</name>

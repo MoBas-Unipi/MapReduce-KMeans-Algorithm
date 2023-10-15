@@ -32,7 +32,7 @@ public class KMeans {
         Set<Integer> initialCentroidPositions = new TreeSet<>();
         List<Centroid> initialCentroids = new ArrayList<>();
 
-        Random random = new Random(1);
+        Random random = new Random(2);
 
         // Generate random line numbers as initial centroid positions
         while (initialCentroidPositions.size() != clustersNumber) {
