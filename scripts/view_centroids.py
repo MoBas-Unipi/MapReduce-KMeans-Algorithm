@@ -30,9 +30,9 @@ def read_points_from_file(filename, num_coords, skip_first=False):
     return points
 
 # Parameters definition
-n = 1000
+n = 50000
 d = 3  # Set d to 2 or 3
-k = 3
+k = 5
 
 # Check if d is valid (either 2 or 3)
 if d not in [2, 3]:
@@ -81,7 +81,7 @@ elif d == 3:
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
     dataset_x, dataset_y, dataset_z = zip(*dataset_points)
-    ax.scatter(dataset_x, dataset_y, dataset_z, label="Dataset Points", alpha=0.025)
+    ax.scatter(dataset_x, dataset_y, dataset_z, label="Dataset Points", alpha=0.001)
     ax.set_xlabel("X")
     ax.set_ylabel("Y")
     ax.set_zlabel("Z")
@@ -89,7 +89,7 @@ elif d == 3:
     # Create a scatterplot for the computed centroids from the output file (in red)
     centroid_x, centroid_y, centroid_z = zip(*computed_centroids)
     ax.scatter(centroid_x, centroid_y, centroid_z, label="Computed Centroids", color="red", marker="x")
-    
+
     # Create a scatterplot for the centroids computed with KMeans (in black)
     centroid_x, centroid_y, centroid_z = zip(*centroids)
     ax.scatter(centroid_x, centroid_y, centroid_z, label="sklearn KMeans centroids", color="black")

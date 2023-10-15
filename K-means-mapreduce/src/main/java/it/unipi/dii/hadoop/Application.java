@@ -5,9 +5,7 @@ import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.mapreduce.Job;
 
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.Writer;
 import java.util.List;
 
 
@@ -32,6 +30,10 @@ public class Application {
         final int reducersNumber = conf.getInt("reducersNumber", 1);
         final Float threshold = conf.getFloat("threshold", 0.0001F);
         final int maxIterations = conf.getInt("maxIterations", 2);
+
+        //initialize init time variable
+        long initTime = System.currentTimeMillis();
+        double executionTime = 0.0;
 
         // Check if the number of iterations is set correctly
         if (maxIterations < 1) {
@@ -71,7 +73,7 @@ public class Application {
             double centroidsShift = KMeans.computeCentroidsShift(computedCentroids, conf);
 
             //append the iteration number and the shift value to the log file
-            KMeans.addLogInfo(currentIteration,centroidsShift,computedCentroids,true);
+            KMeans.addLogInfo(currentIteration,centroidsShift,computedCentroids,true, executionTime);
 
             // Check the convergence condition
             convergenceCondition = KMeans.isConverged(centroidsShift, currentIteration, threshold, maxIterations);
@@ -85,8 +87,11 @@ public class Application {
                 for (Centroid centroid : computedCentroids) {
                     System.out.println(centroid.getPoint().toString());
                 }
+                //define finish time and execution time variables
+                long finishTime = System.currentTimeMillis();
+                executionTime = (finishTime - initTime) / 1000.0;
                 //append the final centroids to the log file
-                KMeans.addLogInfo(currentIteration,centroidsShift,computedCentroids,false);
+                KMeans.addLogInfo(currentIteration,centroidsShift,computedCentroids,false, executionTime);
             }
         }
     }

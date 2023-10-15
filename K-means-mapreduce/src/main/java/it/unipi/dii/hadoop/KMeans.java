@@ -17,6 +17,7 @@ import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
 import java.io.*;
+import java.sql.Timestamp;
 import java.util.*;
 
 
@@ -270,12 +271,14 @@ public class KMeans {
 
     /**
      * Append to k-means-log.txt file the iteration and shift information or the final centroids computed
-     * @param currentIteration number of the current iteration
-     * @param centroidShift value of the current shift
+     *
+     * @param currentIteration  number of the current iteration
+     * @param centroidShift     value of the current shift
      * @param computedCentroids list of the final centroids computed
-     * @param isIteration boolean to discriminate if the iterations are terminated or not
+     * @param isIteration       boolean to discriminate if the iterations are terminated or not
+     * @param executionTime
      */
-    public static void addLogInfo(int currentIteration, double centroidShift, List<Centroid> computedCentroids, boolean isIteration) {
+    public static void addLogInfo(int currentIteration, double centroidShift, List<Centroid> computedCentroids, boolean isIteration, double executionTime) {
         // Use try-with-resources to automatically close the FileWriter, BufferedWriter and PrintWriter
         try (FileWriter fw = new FileWriter("k-means-log.txt", true);
              BufferedWriter bw = new BufferedWriter(fw);
@@ -285,11 +288,17 @@ public class KMeans {
                 out.println("Iteration " + currentIteration + ", Shift Value: " + centroidShift);
             }
             else {
-                out.println("FINAL CENTROIDS:");
-                // Write the final centroids computed to the log file
+                out.println("\nFINAL CENTROIDS:");
+                // write the final centroids computed to the log file
                 for (Centroid centroid : computedCentroids) {
                     out.println(centroid.getPoint().toString());
                 }
+                // write the timestamp in the log file
+                out.println("\nTimestamp: " + new Timestamp(System.currentTimeMillis()));
+                // write the execution time in the log file
+                out.println("\nExecution Time: " + executionTime + " s");
+                // write the average iteration time in the log file
+                out.println("\nAverage Iteration Time: " + executionTime/currentIteration + " s");
             }
         } catch (IOException e) {
             System.err.println("Error during the write operation on the log file");
