@@ -70,7 +70,7 @@ public class Application {
             // Compute the centroids shift
             double centroidsShift = KMeans.computeCentroidsShift(computedCentroids, conf);
 
-            //insert in the log file the iteration info
+            //append the iteration number and the shift value to the log file
             KMeans.addLogInfo(currentIteration,centroidsShift,computedCentroids,true);
 
             // Check the convergence condition
@@ -85,7 +85,7 @@ public class Application {
                 for (Centroid centroid : computedCentroids) {
                     System.out.println(centroid.getPoint().toString());
                 }
-                //append the final centroids in the log file
+                //append the final centroids to the log file
                 KMeans.addLogInfo(currentIteration,centroidsShift,computedCentroids,false);
             }
         }

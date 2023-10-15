@@ -268,6 +268,13 @@ public class KMeans {
     }
 
 
+    /**
+     * Append to k-means-log.txt file the iteration and shift information or the final centroids computed
+     * @param currentIteration number of the current iteration
+     * @param centroidShift value of the current shift
+     * @param computedCentroids list of the final centroids computed
+     * @param isIteration boolean to discriminate if the iterations are terminated or not
+     */
     public static void addLogInfo(int currentIteration, double centroidShift, List<Centroid> computedCentroids, boolean isIteration) {
         // Use try-with-resources to automatically close the FileWriter, BufferedWriter and PrintWriter
         try (FileWriter fw = new FileWriter("k-means-log.txt", true);
@@ -279,13 +286,13 @@ public class KMeans {
             }
             else {
                 out.println("FINAL CENTROIDS:");
-                // Write the iteration information to the log file
+                // Write the final centroids computed to the log file
                 for (Centroid centroid : computedCentroids) {
                     out.println(centroid.getPoint().toString());
                 }
             }
         } catch (IOException e) {
-            System.err.println("Error during the iteration info write operation on the log file");
+            System.err.println("Error during the write operation on the log file");
             e.printStackTrace();
         }
     }
