@@ -5,7 +5,9 @@ import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.mapreduce.Job;
 
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Writer;
 import java.util.List;
 
 
@@ -68,6 +70,9 @@ public class Application {
             // Compute the centroids shift
             double centroidsShift = KMeans.computeCentroidsShift(computedCentroids, conf);
 
+            //insert in the log file the iteration info
+            KMeans.addLogInfo(currentIteration,centroidsShift,computedCentroids,true);
+
             // Check the convergence condition
             convergenceCondition = KMeans.isConverged(centroidsShift, currentIteration, threshold, maxIterations);
             if (!convergenceCondition){
@@ -80,6 +85,8 @@ public class Application {
                 for (Centroid centroid : computedCentroids) {
                     System.out.println(centroid.getPoint().toString());
                 }
+                //append the final centroids in the log file
+                KMeans.addLogInfo(currentIteration,centroidsShift,computedCentroids,false);
             }
         }
     }

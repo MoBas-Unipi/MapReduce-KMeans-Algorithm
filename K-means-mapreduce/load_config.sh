@@ -1,4 +1,4 @@
-#load the config.xml in the hdfs
+#send the config.xml to the namenode
 scp config.xml hadoop@10.1.1.53:~
 
 #remove the old configuration file from the hdfs

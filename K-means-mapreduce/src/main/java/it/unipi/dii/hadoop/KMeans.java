@@ -16,9 +16,7 @@ import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.*;
 
 
@@ -267,5 +265,28 @@ public class KMeans {
      */
     public static boolean isConverged(double shift, int currentIteration, Float threshold, int maxIterations) {
         return shift < threshold || currentIteration == maxIterations;
+    }
+
+
+    public static void addLogInfo(int currentIteration, double centroidShift, List<Centroid> computedCentroids, boolean isIteration) {
+        // Use try-with-resources to automatically close the FileWriter, BufferedWriter and PrintWriter
+        try (FileWriter fw = new FileWriter("k-means-log.txt", true);
+             BufferedWriter bw = new BufferedWriter(fw);
+             PrintWriter out = new PrintWriter(bw)) {
+            if (isIteration) {
+                // Write the iteration information to the log file
+                out.println("Iteration " + currentIteration + ", Shift Value: " + centroidShift);
+            }
+            else {
+                out.println("FINAL CENTROIDS:");
+                // Write the iteration information to the log file
+                for (Centroid centroid : computedCentroids) {
+                    out.println(centroid.getPoint().toString());
+                }
+            }
+        } catch (IOException e) {
+            System.err.println("Error during the iteration info write operation on the log file");
+            e.printStackTrace();
+        }
     }
 }

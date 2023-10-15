@@ -41,7 +41,7 @@ if d not in [2, 3]:
 
 # File paths for the dataset and the output files matching the pattern
 dataset_file = f"datasets/n_{n}_d_{d}_k_{k}.txt"
-output_files = glob.glob("output/part-r-*")
+output_files = glob.glob(f"output/n_{n}_d_{d}_k_{k}/part-r-*")
 
 # Read points from the dataset file
 dataset_points = read_points_from_file(dataset_file, d)

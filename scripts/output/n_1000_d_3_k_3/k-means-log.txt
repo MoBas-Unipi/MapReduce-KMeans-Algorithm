@@ -1,0 +1,7 @@
+Iteration 1, Shift Value: 13.867711358746645
+Iteration 2, Shift Value: 1.626342940079656
+Iteration 3, Shift Value: 0.0
+FINAL CENTROIDS:
+0.7843 7.4937 7.1175
+-6.7008 -5.8788 -9.1981
+0.9659 4.7664 -3.6117
