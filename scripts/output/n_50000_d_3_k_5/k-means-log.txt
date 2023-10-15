@@ -1,0 +1,33 @@
+Iteration 1, Shift Value: 7.804089018518512
+Iteration 2, Shift Value: 19.58920907878755
+Iteration 3, Shift Value: 8.043453642188547
+Iteration 4, Shift Value: 8.120404269583835
+Iteration 5, Shift Value: 9.1891423109863
+Iteration 6, Shift Value: 7.355557266039199
+Iteration 7, Shift Value: 13.649412025224649
+Iteration 8, Shift Value: 9.087406190894711
+Iteration 9, Shift Value: 5.900613898182503
+Iteration 10, Shift Value: 6.794962750489708
+Iteration 11, Shift Value: 7.937594079974442
+Iteration 12, Shift Value: 8.359320359562792
+Iteration 13, Shift Value: 8.872666088309304
+Iteration 14, Shift Value: 7.495769706975361
+Iteration 15, Shift Value: 7.794501297781077
+Iteration 16, Shift Value: 9.865873028068753
+Iteration 17, Shift Value: 5.2134384846041355
+Iteration 18, Shift Value: 10.25929470812348
+Iteration 19, Shift Value: 10.497966358065096
+Iteration 20, Shift Value: 8.489706686018431
+
+FINAL CENTROIDS:
+4.8219 -9.7165 2.6742
+-5.3386 4.5173 -6.7526
+-8.5044 2.7373 8.9225
+-9.4905 1.78 7.0957
+6.1428 0.6162 -5.4512
+
+Timestamp: 2023-10-15 17:13:39.2
+
+Execution Time: 420.359 s
+
+Average Iteration Time: 21.01795 s

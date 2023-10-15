@@ -1,0 +1,13 @@
+Iteration 1, Shift Value: 3.7419748161332853
+Iteration 2, Shift Value: 0.0
+
+FINAL CENTROIDS:
+-7.1331 -8.8379
+-9.3037 -3.8402
+-0.1441 4.8188
+
+Timestamp: 2023-10-15 16:08:00.41
+
+Execution Time: 39.181 s
+
+Average Iteration Time: 19.5905 s
