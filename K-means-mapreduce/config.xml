@@ -6,11 +6,11 @@
 	</property>
 	<property>
 		<name>clustersNumber</name>
-		<value>7</value>
+		<value>10</value>
 	</property>
 	<property>
 		<name>reducersNumber</name>
-		<value>1</value>
+		<value>4</value>
 	</property>
 	<property>
 		<name>threshold</name>
