@@ -7,8 +7,9 @@ from sklearn.metrics import silhouette_score, pairwise_distances_argmin_min
 
 # Parameters definition
 n = 100000 # Number of data points
-d = 7    # Number of dimensions
-k = 10   # Number of clusters
+d = 7      # Number of dimensions
+k = 10     # Number of clusters
+r = 1      # Number of reducers
 
 # Function to read points from a file and return them as a list of tuples
 def read_points_from_file(filename, num_coords, skip_first=False):
@@ -110,5 +111,5 @@ silhouette_avg = silhouette_score(dataset, cluster_labels)
 print(f"Silhouette Score: {silhouette_avg}")
 
 # Save the silhouette score to a file
-with open(f"output/n_{n}_d_{d}_k_{k}/silhouette_score.txt", "w") as score_file:
+with open(f"output/n_{n}_d_{d}_k_{k}/{r}reducers/silhouette_score.txt", "w") as score_file:
     score_file.write(f"Silhouette Score: {silhouette_avg}")
