@@ -19,11 +19,11 @@ ssh hadoop@10.1.1.53 "/opt/hadoop/bin/hadoop jar K-means-mapreduce-1.0-SNAPSHOT.
 ssh hadoop@10.1.1.53 "/opt/hadoop/bin/hadoop fs -get /user/hadoop/output/ output"
 
 # Copy the output to the local data directory with the test label
-scp -r hadoop@10.1.1.53:~/output ../scripts/output/n_${n}_d_${d}_k_${k}/${r}reducers/
+scp -r hadoop@10.1.1.53:~/output ../results/n_${n}_d_${d}_k_${k}/${r}reducers/
 # remove the output file from the namenode
 ssh hadoop@10.1.1.53 "rm -r output/"
 
 #copy the log file to the results local directory
-scp hadoop@10.1.1.53:~/k-means-log.txt ../scripts/output/n_${n}_d_${d}_k_${k}/${r}reducers/k-means-log.txt
+scp hadoop@10.1.1.53:~/k-means-log.txt ../results/n_${n}_d_${d}_k_${k}/${r}reducers/k-means-log.txt
 #remove the log file from the namenode
 ssh hadoop@10.1.1.53 "rm k-means-log.txt"

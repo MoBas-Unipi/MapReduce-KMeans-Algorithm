@@ -10,7 +10,7 @@
 	</property>
 	<property>
 		<name>reducersNumber</name>
-		<value>4</value>
+		<value>3</value>
 	</property>
 	<property>
 		<name>threshold</name>

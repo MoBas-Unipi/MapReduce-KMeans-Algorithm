@@ -6,9 +6,9 @@ import numpy as np
 from sklearn.metrics import silhouette_score, pairwise_distances_argmin_min
 
 # Parameters definition
-n = 100000 # Number of data points
-d = 7      # Number of dimensions
-k = 10     # Number of clusters
+n = 1000 # Number of data points
+d = 3      # Number of dimensions
+k = 3    # Number of clusters
 r = 1      # Number of reducers
 
 # Function to read points from a file and return them as a list of tuples
@@ -33,8 +33,8 @@ def read_points_from_file(filename, num_coords, skip_first=False):
     return points
 
 # File paths for the dataset and the output files matching the pattern
-dataset_file = f"datasets/n_{n}_d_{d}_k_{k}.txt"
-output_files = glob.glob(f"output/n_{n}_d_{d}_k_{k}/part-r-*")
+dataset_file = f"../datasets/n_{n}_d_{d}_k_{k}.txt"
+output_files = glob.glob(f"../results/n_{n}_d_{d}_k_{k}/{r}reducers/part-r-*")
 
 # Read points from the dataset file
 dataset_points = read_points_from_file(dataset_file, d)
@@ -52,7 +52,7 @@ for output_file in output_files:
 # centroids = kmeans.cluster_centers_
 
 # Create the 'plots' folder if it doesn't exist
-os.makedirs('plots/results', exist_ok=True)
+os.makedirs('../plots/results', exist_ok=True)
 
 if d == 2:
     # Create a scatterplot for the dataset points
@@ -95,7 +95,7 @@ if d in [2, 3]:
     plt.title(f"Results (n={n}, d={d}, k={k})")
 
     # Save the plot as an image file
-    plt.savefig(f"plots/results/results_n_{n}_d_{d}_k_{k}.png")
+    plt.savefig(f"../plots/results/results_n_{n}_d_{d}_k_{k}.png")
 
 
 # Convert dataset_points and computed_centroids to numpy arrays
@@ -111,5 +111,5 @@ silhouette_avg = silhouette_score(dataset, cluster_labels)
 print(f"Silhouette Score: {silhouette_avg}")
 
 # Save the silhouette score to a file
-with open(f"output/n_{n}_d_{d}_k_{k}/{r}reducers/silhouette_score.txt", "w") as score_file:
+with open(f"../results/n_{n}_d_{d}_k_{k}/{r}reducers/silhouette_score.txt", "w") as score_file:
     score_file.write(f"Silhouette Score: {silhouette_avg}")

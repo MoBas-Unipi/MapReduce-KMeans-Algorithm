@@ -5,19 +5,19 @@ from pandas import DataFrame
 import seaborn as sns
 
 # Set the parameters for data generation
-n = 100000  # Number of data points
-d = 7  # Number of dimensions
-k = 10  # Number of clusters
+n = 1000  # Number of data points
+d = 3  # Number of dimensions
+k = 3  # Number of clusters
 
 # Generate synthetic data using make_blobs function
-points, y = make_blobs(n_samples=n, centers=k, n_features=d, random_state=17, cluster_std=0.5)
+points, y = make_blobs(n_samples=n, centers=k, n_features=d, random_state=3, cluster_std=0.5)
 
 # Create 'datasets' and 'plots' folders if they don't exist
-os.makedirs('datasets', exist_ok=True)
-os.makedirs('plots', exist_ok=True)
+os.makedirs('../datasets', exist_ok=True)
+os.makedirs('../plots/datasets', exist_ok=True)
 
 # Define the file path inside the 'datasets' folder
-file_path = os.path.join('datasets', f"n_{n}_d_{d}_k_{k}.txt")
+file_path = os.path.join('../datasets', f"n_{n}_d_{d}_k_{k}.txt")
 
 # Save the generated dataset to a file inside the 'datasets' folder 
 with open(file_path, "w") as file:
@@ -67,4 +67,4 @@ plt.legend()
 plt.title(f"Results (n={n}, d={d}, k={k})")
 
 # Save the plot as an image file
-plt.savefig(f"plots/dataset_n_{n}_d_{d}_k_{k}.png")
+plt.savefig(f"../plots/datasets/dataset_n_{n}_d_{d}_k_{k}.png")

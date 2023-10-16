@@ -1,3 +1,6 @@
+# Move to the project directory
+cd ../K-means-mapreduce/
+
 # Build and package the Java application
 mvn clean package
 
