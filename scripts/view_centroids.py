@@ -6,9 +6,9 @@ import numpy as np
 from sklearn.metrics import silhouette_score, pairwise_distances_argmin_min
 
 # Parameters definition
-n = 1000 # Number of data points
-d = 3    # Number of dimensions
-k = 3   # Number of clusters
+n = 100000 # Number of data points
+d = 7    # Number of dimensions
+k = 10   # Number of clusters
 
 # Function to read points from a file and return them as a list of tuples
 def read_points_from_file(filename, num_coords, skip_first=False):
