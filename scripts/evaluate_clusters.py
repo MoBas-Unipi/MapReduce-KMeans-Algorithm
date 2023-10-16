@@ -6,10 +6,10 @@ import numpy as np
 from sklearn.metrics import silhouette_score, pairwise_distances_argmin_min
 
 # Parameters definition
-n = 100000 # Number of data points
-d = 7      # Number of dimensions
-k = 10      # Number of clusters
-r = 4      # Number of reducers
+n = 1000 # Number of data points
+d = 2      # Number of dimensions
+k = 3      # Number of clusters
+r = 1      # Number of reducers
 
 # Function to read points from a file and return them as a list of tuples
 def read_points_from_file(filename, num_coords, skip_first=False):
@@ -57,7 +57,7 @@ os.makedirs('../plots/results', exist_ok=True)
 if d == 2:
     # Create a scatterplot for the dataset points
     dataset_x, dataset_y = zip(*dataset_points)
-    plt.scatter(dataset_x, dataset_y, label="Dataset Points")
+    plt.scatter(dataset_x, dataset_y, label="Dataset Points", alpha=0.2)
     plt.xlabel("X")
     plt.ylabel("Y")
 
