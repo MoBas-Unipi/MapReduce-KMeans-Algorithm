@@ -29,7 +29,7 @@ public class Point implements Writable {
 
     /**
      * Sum the point coordinates with the coordinates of the point passed as parameter
-     * @param point point with the coordinates to sum with the
+     * @param point point with the coordinates to sum with the current ones
      */
     public void sumCoordinates(Point point) {
         //iterate a number of times equal to coordinates dimensions
