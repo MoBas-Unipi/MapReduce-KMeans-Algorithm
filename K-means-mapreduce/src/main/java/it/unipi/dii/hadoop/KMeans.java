@@ -25,9 +25,13 @@ public class KMeans {
 
     /**
      * Generate a list of Centroid (size k = clusterNumber) taken randomly from input file
-     *
-     * @return List of initial centroids
-     */
+     * 
+     * @param conf The Hadoop Configuration object.
+     * @param clustersNumber The number of initial centroids to generate (k).
+     * @param pointsNumber The total number of points in the input file.
+     * @param inputPath The Hadoop Path object representing the input file path.
+     * @return List of initial centroids.
+    */
     public static List<Centroid> generateInitialCentroids(Configuration conf, int clustersNumber, int pointsNumber, Path inputPath) {
         Set<Integer> initialCentroidPositions = new TreeSet<>();
         List<Centroid> initialCentroids = new ArrayList<>();
@@ -70,7 +74,8 @@ public class KMeans {
     /**
      * Set the initial centroids in the Hadoop Configuration (storage of initial centroids)
      *
-     * @param initialCentroids initial centroids
+     * @param initialCentroids initial centroids.
+     * @param conf The Hadoop Configuration object.
      */
     public static void setCentroidsInConfiguration(List<Centroid> initialCentroids, Configuration conf) {
         // Create an array to store the centroid points as strings
@@ -88,9 +93,17 @@ public class KMeans {
      * Configures a job for a specific iteration.
      *
      * @param iteration The iteration number for the job.
+     * @param conf The Hadoop Configuration object.
+     * @param reducersNumber The number of reducer tasks.
+     * @param inputPath The Hadoop Path object representing the input path.
+     * @param outputPath The Hadoop Path object representing the output path.
      * @return A configured Hadoop MapReduce job for K-Means clustering.
+     * @throws IOException If an I/O error occurs.
+     * @throws InterruptedException If the job execution is interrupted.
+     * @throws ClassNotFoundException If the specified class is not found.
      */
-    public static Job configureJob(int iteration, Configuration conf, int reducersNumber, Path inputPath, Path outputPath) throws IOException, InterruptedException, ClassNotFoundException {
+    public static Job configureJob(int iteration, Configuration conf, int reducersNumber,
+     Path inputPath, Path outputPath) throws IOException, InterruptedException, ClassNotFoundException {
         Job job = Job.getInstance(conf, "K-Means-Job-n-" + iteration);
         job.setJarByClass(KMeans.class);
         job.setMapperClass(KMeansMapper.class);
@@ -112,6 +125,7 @@ public class KMeans {
      * configuration and the current centroids.
      *
      * @param computedCentroids The list of current centroids.
+     * @param conf The Hadoop Configuration object.
      * @return The total shift (change) in centroids.
      */
     public static double computeCentroidsShift(List<Centroid> computedCentroids, Configuration conf) {
@@ -135,7 +149,10 @@ public class KMeans {
     /**
      * Reads computed centroids from files and returns them as a list.
      *
+     * @param conf The Hadoop Configuration object.
+     * @param outputPath The Hadoop Path object representing the output path where computed centroids are stored.
      * @return A list of computed centroids.
+     * @throws IOException If an I/O error occurs during the reading process.
      */
     public static List<Centroid> readComputedCentroids(Configuration conf, Path outputPath) throws IOException {
         List<Centroid> computedCentroids = new ArrayList<>();
@@ -145,7 +162,7 @@ public class KMeans {
             FileStatus[] fileStatus = hdfs.listStatus(outputPath);
             for (FileStatus status : fileStatus) {
                 Path path = status.getPath();
-                // Skip success files in the output folder
+                // Skip success files in the output folder.
                 if (path.getName().endsWith("_SUCCESS")) {
                     continue;
                 }
@@ -179,8 +196,10 @@ public class KMeans {
     }
 
     /**
-     * Read the set of centroid stored in the Hadoop configuration
-     * @return a list of centroids
+     * Read the set of centroids stored in the Hadoop configuration.
+     *
+     * @param conf The Hadoop Configuration object.
+     * @return A list of centroids.
      */
     public static List<Centroid> readCentroidsInConfiguration(Configuration conf) {
         //create a list to store the read centroids set
@@ -201,9 +220,10 @@ public class KMeans {
     }
 
     /**
-     * Split a string by spaces and creates a list of doubles representing the coordinates
-     * @param text text representing the point's coordinates to split
-     * @return coordinates in List<Double> format
+     * Split a string by spaces and creates a list of doubles representing the coordinates.
+     * 
+     * @param text text representing the point's coordinates to split.
+     * @return coordinates in List<Double> format.
      */
     public static List<Double> splitInCoordinates(String text){
         List<Double> coordinates = new ArrayList<>();
@@ -215,11 +235,12 @@ public class KMeans {
     }
 
     /**
-     * Compute the Euclidean distance between two points
-     * Math explanation: square root of the sum of the squares of the differences for each coordinate
-     * @param point point to compare against the centroid
-     * @param centroid current centroid
-     * @return distance between the centroid and the point
+     * Compute the Euclidean distance between two points.
+     * Math explanation: square root of the sum of the squares of the differences for each coordinate.
+     * 
+     * @param point point to compare against the centroid.
+     * @param centroid current centroid.
+     * @return distance between the centroid and the point.
      */
     public static double computeEuclideanDistance(Point point, Point centroid) {
         double sum = 0.0;
@@ -267,7 +288,6 @@ public class KMeans {
     public static boolean isConverged(double shift, int currentIteration, Float threshold, int maxIterations) {
         return shift < threshold || currentIteration == maxIterations;
     }
-
 
     /**
      * Append to k-means-log.txt file the iteration and shift information or the final centroids computed
