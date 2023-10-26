@@ -72,18 +72,18 @@ public class KMeans {
     }
 
     /**
-     * Set the initial centroids in the Hadoop Configuration (storage of initial centroids)
+     * Set the centroids specified as parameter in the Hadoop Configuration
      *
-     * @param initialCentroids initial centroids.
+     * @param centroids List of centroids.
      * @param conf The Hadoop Configuration object.
      */
-    public static void setCentroidsInConfiguration(List<Centroid> initialCentroids, Configuration conf) {
+    public static void setCentroidsInConfiguration(List<Centroid> centroids, Configuration conf) {
         // Create an array to store the centroid points as strings
-        String[] centroidStrings = new String[initialCentroids.size()];
+        String[] centroidStrings = new String[centroids.size()];
 
         // Convert each centroid's point to a string and store it in the array
-        for (int i = 0; i < initialCentroids.size(); i++) {
-            centroidStrings[i] = initialCentroids.get(i).getPoint().toString();
+        for (int i = 0; i < centroids.size(); i++) {
+            centroidStrings[i] = centroids.get(i).getPoint().toString();
         }
         // Set the configuration property specified by `key` to the array of centroid strings
         conf.setStrings("centroids", centroidStrings);
