@@ -61,7 +61,7 @@ public class KMeansMapper extends Mapper<Object, Text, IntWritable, Point> {
                 distanceFromCentroid = currentDistance;
             }
         }
-        //3.emit/write the pair (centroid_id, nearest point)
+        //3.emit/write the pair (centroid_id, current point)
         context.write(centroidID, point);
     }
 
